@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>DNW Boat Reservation</title>
+		<meta charset = "UTF-8">
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="boatRes.css">
+		<script>
+			//create passenger count variables as globals
+			var decPassCount = -1;
+			var anaPassCount = -1;
+			var totalNum = -1;
+			//sylvan spirit max passenger count is 55
+			var maxPassengerCount = 55;
+
+			$(function () {
+				//add any necessary boats
+				$.post("addBoats.php").done(function(){
+					//init datepickers once boats added
+					var boatDates = []; //will hold json data
+					$.getJSON("getBoats.php", function(jsonDates){
+						for(i=0; i < jsonDates.length; i++){
+							boatDates.push(jsonDates[i]);
+						}
+						$("#toDecaturDate").datepicker({
+							minDate: '+1',
+							maxDate: '+30',
+							beforeShowDay: function(testDate){
+								var d = testDate.getDate();
+								var m = testDate.getMonth();
+								m += 1; //since months are 0-11
+								var y = testDate.getFullYear();
+								var formatDate = y + '-' + (m<10 ? '0' : '') + m + '-' + (d<10 ? '0' : '') + d; //format date yyyy-mm-dd
+								if ($.inArray(formatDate, boatDates) > -1){
+									return [true];
+								}
+								else {
+									return [false];
+								}
+							}
+						});
+						$("#toAnacortesDate").datepicker({
+							minDate: '+1',
+							maxDate: '+30',
+							beforeShowDay: function(testDate){
+								var d = testDate.getDate();
+								var m = testDate.getMonth();
+								m += 1; //since months are 0-11
+								var y = testDate.getFullYear();
+								var formatDate = y + '-' + (m<10 ? '0' : '') + m + '-' + (d<10 ? '0' : '') + d; //format date yyyy-mm-dd
+								if ($.inArray(formatDate, boatDates) > -1){
+									return [true];
+								}
+								else {
+									return [false];
+								}
+							}
+						});
+					});
+				});
+				
+				//ensure guest and radios unchecked on back to page
+				$('#checkGuest').prop('checked', false);
+				$('#roundtrip').prop('checked', false);
+				$('#oneWayDecatur').prop('checked', false);
+				$('#oneWayAnacortes').prop('checked', false);
+
+				//check for session storage and reset form if exists
+				if(sessionStorage.getItem('sessionSet') === 'true'){
+					$('#homeowner').val(sessionStorage.getItem('homeownerName'));
+					$('#email').val(sessionStorage.getItem('email'));
+					var phne = sessionStorage.getItem('phone');
+					var phoneStr = "(" + phne.slice(0,3) + ")-" + phne.slice(3,6) + "-" + phne.slice(6,10);
+					$('#phone').val(phoneStr);
+					$('#numAdultHomeowner').val(sessionStorage.getItem('numAdultHomeowner'));
+					$('#numChildHomeowner').val(sessionStorage.getItem('numChildHomeowner'));
+					$('#numAdultGuest').val(sessionStorage.getItem('numAdultGuest'));
+					$('#numChildGuest').val(sessionStorage.getItem('numChildGuest'));
+					if(sessionStorage.getItem('isGuest') === '1'){
+						$('#checkGuest').prop('checked', true);
+						$("#guestCheckDiv").show();
+						$('#guest').val(sessionStorage.getItem('guestName'));
+					}
+					$('#comment').val(sessionStorage.getItem('comments'));
+					//user will have to reaccept guest conditions and re-enter dates/times
+				}
+
+				//show or hide guest name field
+				$('#checkGuest').on('change', function () {
+					if ($('#checkGuest').prop('checked')) {
+						$("#guestCheckDiv").show();
+					}
+					else{
+						$("#guestCheckDiv").hide();
+						$('#guest').val(''); //clear guest name on unselecting guest
+					} 
+				});
+
+				//phone formatting - will auto insert () and - so phone number is (xxx)-xxx-xxxx
+				var prevLen = 0;
+				$('#phone').on('input', function(){
+					var curLen = $('#phone').val().length;
+					//cases for adding - user has just typed a char
+					if (prevLen < curLen){
+						var lastChar = $('#phone').val().slice(-1); //get most recent added char 
+						var isNum = /^[0-9]+$/.test(lastChar);
+						if(!isNum){
+							var delBad = $('#phone').val().slice(0,-1); //delete last char
+							$('#phone').val(delBad);
+						}
+						//standard case - user has entered 123, transforms to (123)-
+						else if(curLen === 3){
+							var addParens = "(" + $('#phone').val() + ")-";
+							$('#phone').val(addParens);
+						}
+						//user deletes to 123 then types next num, transforms to (123)-4
+						else if(curLen === 4 && $('#phone').val().slice(0,1) !== '('){
+							var insertParens = $('#phone').val().slice(0,-1);
+							insertParens = "(" + insertParens + ")-" + lastChar;
+							$('#phone').val(insertParens);
+						}
+						//standard case - user has (123)-456, next hyphen added (123)-456-
+						else if(curLen === 9){
+							var addHyphen = $('#phone').val() + "-";
+							$('#phone').val(addHyphen);
+						}
+						//user deletes hyphen then enters number (123)-4567 transforms to (123)-456-7
+						else if(curLen === 10 && $('#phone').val().slice(9,10) !== '-'){
+							var insertHyphen = $('#phone').val().slice(0,-1);
+							insertHyphen = insertHyphen + "-" + lastChar;
+							$('#phone').val(insertHyphen);
+						}
+					}
+					//cases for deleting, user has just removed a char
+					//user is deleting, hyphen is removed, will be readded with an add case
+					else if(curLen === 10){
+						var delHyphen = $('#phone').val().slice(0,-1); //delete last char
+						$('#phone').val(delHyphen);
+					}
+					//once at or below 6, all parens and hyphens removed, readded with add cases
+					else if(curLen <= 6){
+						var removePH = $('#phone').val().replace(/\D/g,'');
+						$('#phone').val(removePH);
+					}
+					prevLen = $('#phone').val().length;
+				});
+
+				//show hide date fields
+				$('input[type=radio][name=tripType]').on('change', function (){
+					//always hide possible error after change
+					$('#tripTypeReq').hide();
+					$('#decaturDateReq').hide();
+					$('#decaturTimeReq').hide();
+					$('#decaturTimeDiv').hide();
+					$('#anacortesDateReq').hide();
+					$('#anacortesTimeReq').hide();
+					$('#anacortesTimeDiv').hide();
+					$('#decBoatCountError').hide();
+					$('#anaBoatCountError').hide();
+					//reset values
+					$('#toAnacortesDate').val('');
+					$('#toDecaturDate').val('');
+					//show both for roundtrip, only one for one way
+					switch($(this).val()){
+						case 'roundtrip':
+							$('#toDecaturDiv').show();
+							$('#toAnacortesDiv').show();
+							break;
+						case 'oneWayDecatur':
+							$('#toDecaturDiv').show();
+							$('#toAnacortesDiv').hide();
+							break;
+						case 'oneWayAnacortes':
+							$('#toDecaturDiv').hide();
+							$('#toAnacortesDiv').show();
+							break;
+					}	
+				});
+
+				//remove error msgs on changing values
+				$('#toDecaturDate').on('change', function(){
+					$('#decaturDateReq').hide();
+					$('#decaturTimeReq').hide();
+					$('#decBoatCountError').hide();
+				});
+				$('#toAnacortesDate').on('change', function(){
+					$('#anacortesDateReq').hide();
+					$('#anacortesTimeReq').hide();
+					$('#anaBoatCountError').hide();
+				});
+				
+				//run ajax here to get passenger counts
+				$('#decaturTime').on('change', function(){
+					$('#decaturTimeReq').hide();
+					$('#decBoatCountError').hide();
+					var departAnaDate = $('#toDecaturDate').val();
+					var departAnaTime = $('#decaturTime').val();
+					//ajax function to callback to return current passenger count on boat
+					$.getJSON('checkFull.php', {date: departAnaDate, time: departAnaTime, depart: 'a'}, function(jsonCount){
+						var space = jsonCount['fromAnacortesCount'];
+						decPassCount = callback(space);
+					});
+				});
+				$('#anacortesTime').on('change', function(){
+					$('#anacortesTimeReq').hide();
+					$('#anaBoatCountError').hide();
+					var departDecDate = $('#toAnacortesDate').val();
+					var departDecTime = $('#anacortesTime').val();
+					//ajax function to callback to return current passenger count on boat
+					$.getJSON('checkFull.php', {date: departDecDate, time: departDecTime, depart: 'd'}, function(jsonCount){
+						var space = jsonCount['fromDecaturCount'];
+						anaPassCount = callback(space);
+					});
+				});
+			});
+			function whenSubmit(){
+				//remove any submit msg
+				$('#subMsg').html("");
+
+				//homeowner
+				if (!$('#homeowner').val()){
+					//error
+					$('#homeownerReq').show();
+					$('#homeowner').focus();
+					return false;
+				}
+				else{
+					$('#homeownerReq').hide();
+				}
+
+				//guest
+				//check guest info, optional if not checked
+				$('#guestReq').hide();
+				$('#requireGuestAccept').hide();
+				if ($('#checkGuest').prop('checked')) {
+					//require check accept
+					if (!$('#guest').val()){
+						$('#guestReq').show();
+						$('#guest').focus();
+						return false;
+					}
+					else if (!$('#guestAccept').prop('checked')){
+						$('#requireGuestAccept').show();
+						$('#guestAccept').focus();
+						return false;
+					}
+					else{ 
+						$('#guestReq').hide();
+						$('#requireGuestAccept').hide();
+					}
+				}
+
+				//email
+				if (!$('#email').val()){
+					//show error
+					$('#emailReq').show();
+					$('#email').focus();
+					return false;
+				}
+				//regex here test for at least a char before @, only 1 @, followed by a dot, followed by at least a char
+				else if (!/^[^@]+@[^@]+\.[^@]+$/.test($('#email').val())){
+					$('#emailReq').show();
+					$('#email').focus();
+					return false;
+				}
+				else{
+					$('#emailReq').hide();
+				}
+
+				//phone
+				//validate phone number
+				var phone = $('#phone').val();
+				phone = phone.replace(/\D/g,'');
+				if (!$('#phone').val()){
+					//show error
+					$('#phoneError').show();
+					$('#phone').focus();
+					return false;
+				}
+				else if(phone.length !== 10){
+					$('#phoneError').show();
+					$('#phone').focus();
+					return false;
+				}
+				else{
+					$('#phone').val(phone);
+					$('#phoneError').hide();
+				}
+
+				//test total travellers number is less than 15
+				//set variables to zero if undefined
+				var adultHO = parseInt($('#numAdultHomeowner').val(), 10);
+				var childHO = parseInt($('#numChildHomeowner').val(), 10);
+				var adultG = parseInt($('#numAdultGuest').val(), 10);
+				var childG = parseInt($('#numChildGuest').val(), 10);
+				//get total number
+				totalNum = adultHO + childHO + adultG + childG;
+				//start with errors hidden
+				$('#noTravellerError').hide();
+				$('#guestNumError').hide();
+				//fail if greater than 15 or 0
+				if (totalNum > 15){
+					$('#guestNumError').show();
+					$('#numAdultHomeowner').focus();
+					return false;
+				}
+				else if (totalNum <= 0){
+					$('#noTravellerError').show();
+					$('#numAdultHomeowner').focus();
+					return false;
+				}
+				else{
+					$('#noTravellerError').hide();
+					$('#guestNumError').hide();
+				}
+
+				//trip type
+				if (!$('[name="tripType"]').is(':checked')){
+					//show error
+					$('#tripTypeReq').show();
+					$('#roundtrip').focus()
+					return false;
+				}
+				else{
+					$('#tripTypeReq').hide();
+				}
+
+				//dates and times
+				if($('[name="tripType"]:checked').val() === 'roundtrip'){
+					//hide all errors to start
+					$('#decaturDateReq').hide();
+					$('#decaturTimeReq').hide();
+					$('#anacortesDateReq').hide();
+					$('#anacortesTimeReq').hide();
+
+					//check dates and times selected
+					if(!$('#toDecaturDate').val()){
+						$('#decaturDateReq').show();
+						return false;
+					}
+					else if (!$('#toAnacortesDate').val()){
+						$('#anacortesDateReq').show();
+						return false;
+					}
+					else if (!$('#decaturTime').val()){
+						$('#decaturTimeReq').show();
+						return false;
+					}
+					else if (!$('#anacortesTime').val()){
+						$('#anacortesTimeReq').show();
+						return false;
+					}
+				}
+				else if ($('[name="tripType"]:checked').val() === 'oneWayDecatur'){
+					//hide errors to start
+					$('#decaturDateReq').hide();
+					$('#decaturTimeReq').hide();
+					//check date and time
+					if(!$('#toDecaturDate').val()){
+						$('#decaturDateReq').show();
+						return false;
+					}
+					else if (!$('#decaturTime').val()){
+						$('#decaturTimeReq').show();
+						return false;
+					}
+				}
+				else if ($('[name="tripType"]:checked').val() === 'oneWayAnacortes'){
+					//hide errors at start
+					$('#anacortesDateReq').hide();
+					$('#anacortesTimeReq').hide();
+					//check date and time
+					if (!$('#toAnacortesDate').val()){
+						$('#anacortesDateReq').show();
+						return false;
+					}
+					else if (!$('#anacortesTime').val()){
+						$('#anacortesTimeReq').show();
+						return false;
+					}
+				}
+
+				//check passenger count to decatur is good
+				var passCountFail = 0;
+				if($('#toDecaturDate').val()){
+					$('#decBoatCountError').hide();
+					if(decPassCount + totalNum > maxPassengerCount){
+						var decSpacesLeft = (maxPassengerCount - decPassCount);
+						if (decSpacesLeft === 1){
+							$('#decBoatCountError').html("You have selected " + totalNum + " travelers for your boat to Decatur but there is only " + decSpacesLeft + " space available.");
+						}
+						else{
+							$('#decBoatCountError').html("You have selected " + totalNum + " travelers for your boat to Decatur but there are only " + decSpacesLeft + " spaces available.");
+						}
+						$('#decBoatCountError').show();
+						passCountFail += 1;
+					}
+				}
+				//check passenger count to anacortes is good
+				if($('#toAnacortesDate').val()){
+					$('#anaBoatCountError').hide();
+					if(anaPassCount + totalNum > maxPassengerCount){
+						var anaSpacesLeft = (maxPassengerCount - anaPassCount);
+						if (anaSpacesLeft === 1){
+							$('#anaBoatCountError').html("You have selected " + totalNum + " travelers for your boat to Anacortes but there is only " + anaSpacesLeft + " space available.");
+						}
+						else{
+							$('#anaBoatCountError').html("You have selected " + totalNum + " travelers for your boat to Anacortes but there are only " + anaSpacesLeft + " spaces available.");
+						}
+						$('#anaBoatCountError').show();
+						passCountFail += 1;
+					}
+				}
+				//using an extra variable here so that if both boats are full, it tells the user instead of evaluating one at a time
+				if(passCountFail){
+					return false;
+				}
+
+				//submit if passes all
+				var formData = $('#boatResForm').serialize();
+				//return true to complete submit
+				return true;
+			}
+			//callback function for checking num of passengers
+			function callback(passengerCount){
+				console.log("passengerCount: " + passengerCount);
+				//cast as int, since was returning as string
+				return parseInt(passengerCount, 10);
+			}
+			
+		</script>
+	</head>
+	<body>
+		<div id="outerDiv">
+			<form id="boatResForm" action="confirmation.php" method="post" onsubmit="return whenSubmit()" novalidate>
+			<legend><b>New Boat Reservation</b></legend>
+			<p><input type="checkbox" name="checkGuest" id="checkGuest">Please check if you are a guest.</p>
+			
+			<p><label for="homeowner">Homeowner Name:</label></p>
+			<p><input id="homeowner" name="homeowner" type="text" maxlength="100" pattern="[\d\w\s\-\.]+"></p>
+			<div id="homeownerReq">Enter the homeowner name.</div>
+			
+			<div id="guestCheckDiv">
+				<p><label for="guest">Guest Name:</label></p>
+				<p><input id="guest" name="guest" type="text" maxlength="100" pattern="[\d\w\s\-\.]+">
+				<div id="guestReq">Enter the guest name.</div>
+				<p><input id="guestAccept" name="guestAccept" type="checkbox">
+					<b>I accept and understand the <a href="/guestRegulations">DNW Guest Guidelines</a></b></p>
+				<p id="requireGuestAccept">You must read, understand, and accept the DNW Guest Guidelines.</p>
+			</div>
+			<p><label for="email">Email:</label></p>
+			<p><input id="email" name="email" type="email" maxlength="255"></p>
+			<div id="emailReq">Enter a valid email. Your confirmation will be sent there.</div>
+
+			<div id="phoneDiv">
+				<p><label for="phone">Phone Number:</label></p>
+				<p><input id="phone" name="phone" type="tel" maxlength="14"></p>
+				<div id="phoneError">Enter a valid 10 digit phone number.</div>
+			</div>
+
+			<div id="travellerDiv">
+				<p>Number of Travelers - </p>
+					<div id="homeownerDiv">
+					<p><label for="numAdultHomeowner">Adult homeowners:</label></p>
+					<p>
+						<select id="numAdultHomeowner" name="numAdultHomeowner">
+							<option value="0">0</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+							<option value="13">13</option>
+							<option value="14">14</option>
+							<option value="15">15</option>
+						</select>
+						 ($15 round trip)
+					</p>
+					<p><label for="numChildHomeowner">Child (ages 0-17) homeowners:</label></p>
+					<p>
+						<select id="numChildHomeowner" name="numChildHomeowner">
+							<option value="0">0</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+							<option value="13">13</option>
+							<option value="14">14</option>
+							<option value="15">15</option>
+						</select> 
+						 ($10 round trip)
+					</p>
+					</div>
+					<div id="guestDiv">
+					<p><label for="numAdultGuest">Adult guests:</label></p>
+					<p>
+						<select id="numAdultGuest" name="numAdultGuest">
+							<option value="0">0</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+							<option value="13">13</option>
+							<option value="14">14</option>
+							<option value="15">15</option>
+						</select>
+						 ($35 round trip)
+					</p>
+					<p><label for="numChildGuest">Child (ages 0-17) guests:</label></p>
+					<p><select id="numChildGuest" name="numChildGuest">
+							<option value="0">0</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+							<option value="13">13</option>
+							<option value="14">14</option>
+							<option value="15">15</option>
+						</select>
+						 ($20 round trip)
+					</p>
+					</div>
+				<div id="noTravellerError">You haven't added any travelers.</div>
+				<div id="guestNumError">There can be no more than 15 travelers per homeowner.</div>
+			</div>
+
+			<p>Please select trip type:</p>
+				<p><input type="radio" name="tripType" id="roundtrip" value="roundtrip">Round trip</p>
+				<p><input type="radio" name="tripType" id="oneWayDecatur" value="oneWayDecatur">One way to Decatur</p>
+				<p><input type="radio" name="tripType" id="oneWayAnacortes" value="oneWayAnacortes">One way to Anacortes</p>
+				<div id="tripTypeReq">Select a trip type.</div>
+			<div id="toDecaturDiv">
+				<p><label for="toDecaturDate">Date of Departure to Decatur:</label></p>
+				<p><input id="toDecaturDate" name="toDecaturDate" type="text"></p>
+				<div id="decaturDateReq">Select a departure date to Decatur.</div>
+			</div>
+			<div id="decaturTimeDiv">
+				<label for="decaturTime">Select Boat to Decatur: </label>
+				<select id="decaturTime" name="decaturTime">
+					<script>
+						$('#toDecaturDate').on('change', function(){
+							var dd = new Date($('#toDecaturDate').val());
+							var d = dd.getDate();
+							var m = dd.getMonth();
+							m += 1; //since months are 0-11
+							var y = dd.getFullYear();
+							var formatDate = y + '-' + (m<10 ? '0' : '') + m + '-' + (d<10 ? '0' : '') + d; //format date yyyy-mm-dd
+							$('#toDecaturDate').val(formatDate);
+							var sendDate = $('#boatResForm').serialize();
+							var toDecTimes = [];
+							$.post("getTimesDecatur.php", sendDate, function(jsonTimes){
+								console.log(jsonTimes);
+								for(i=0; i < jsonTimes.length; i++){
+									toDecTimes.push(jsonTimes[i]);
+									//console.log(toDecTimes[i]);
+								}
+								$('#decaturTime').html("<option value=''>Select boat time.</option>");
+								for (i=0; i < toDecTimes.length; i++){
+									//convert to string and 12hr time
+									var tmp = toDecTimes[i];
+									var hr = parseInt(tmp.slice(0,2));
+									var min = tmp.slice(3,5);
+									var am = 0;
+									if (hr === 0){
+										hr = 12;
+										am = 1;
+									}
+									else if (hr > 12){
+										hr -= 12;
+									}
+									else{
+										am = 1;
+									}
+
+									if (hr < 10){
+										var hrStr = "0" + hr.toString();
+									}
+									else{
+										var hrStr = hr.toString();
+									}
+
+									var amStr = " am";
+									var pmStr = " pm";
+
+									var valueStr = toDecTimes[i];
+									if (am === 0){
+										var timeText = hrStr + ":" + min + pmStr;
+									}
+									else{
+										var timeText = hrStr + ":" + min + amStr;
+									}
+									$('#decaturTime').append("<option value='" + valueStr + "'>" + timeText + "</option>");
+								}
+
+								$('#decaturTimeDiv').show();
+								$('#decaturTime').val("");
+							}, "JSON");
+						});
+					</script>
+				</select>
+				<div id="decaturTimeReq">Select a boat time to Decatur.</div>
+			</div>
+			<div id="decBoatCountError"></div>
+
+			<div id="toAnacortesDiv">
+				<p><label for="toAnacortesDate">Date of Departure to Anacortes:</label></p>
+				<p><input id="toAnacortesDate" name="toAnacortesDate" type="text"></p>
+				<div id="anacortesDateReq">Select a departure date to Anacortes.</div>
+			</div>
+			<div id="anacortesTimeDiv">
+				<label for="anacortesTime">Select Boat to Anacortes: </label>
+				<select id="anacortesTime" name="anacortesTime">
+					<script>
+						$('#toAnacortesDate').on('change', function(){
+							var ad = new Date($('#toAnacortesDate').val());
+							var d = ad.getDate();
+							var m = ad.getMonth();
+							m += 1; //since months are 0-11
+							var y = ad.getFullYear();
+							var formatDate = y + '-' + (m<10 ? '0' : '') + m + '-' + (d<10 ? '0' : '') + d; //format date yyyy-mm-dd
+							$('#toAnacortesDate').val(formatDate);
+							var sendDate = $('#boatResForm').serialize();
+							var toAnaTimes = [];
+							$.post("getTimesAnacortes.php", sendDate, function(jsonTimes){
+								console.log(jsonTimes);
+								for(i=0; i < jsonTimes.length; i++){
+									toAnaTimes.push(jsonTimes[i]);
+									//console.log(toAnaTimes[i]);
+								}
+								$('#anacortesTime').html("<option value=''>Select boat time.</option>");
+								for (i=0; i < toAnaTimes.length; i++){
+									//convert to string and 12hr time
+									var tmp = toAnaTimes[i];
+									var hr = parseInt(tmp.slice(0,2));
+									var min = tmp.slice(3,5);
+									var am = 0;
+									if (hr === 0){
+										hr = 12;
+										am = 1;
+									}
+									else if (hr > 12){
+										hr -= 12;
+									}
+									else{
+										am = 1;
+									}
+
+									if (hr < 10){
+										var hrStr = "0" + hr.toString();
+									}
+									else{
+										var hrStr = hr.toString();
+									}
+
+									var amStr = " am";
+									var pmStr = " pm";
+
+									var valueStr = toAnaTimes[i];
+									if (am === 0){
+										var timeText = hrStr + ":" + min + pmStr;
+									}
+									else{
+										var timeText = hrStr + ":" + min + amStr;
+									}
+									$('#anacortesTime').append("<option value='" + valueStr + "'>" + timeText + "</option>");
+								}
+
+								$('#anacortesTimeDiv').show();
+								$('#anacortesTime').val("");
+							}, "JSON");
+						});
+					</script>
+				</select>
+				<div id="anacortesTimeReq">Select a boat time to Anacortes.</div>
+			</div>
+			<div id="anaBoatCountError"></div>
+			
+			<p>Comments:</p>
+			<p><textarea rows="6" cols="60" id="comment" name="comment" form="boatResForm"></textarea></p>
+			
+			<div id="submitDiv">
+			<input id="submitButton" type="submit" value="Submit Reservation"><span id="subMsg"></span>
+			</div>
+			</form>
+		</div>
+	</body>
+</html>
