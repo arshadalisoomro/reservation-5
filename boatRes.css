@@ -2,7 +2,9 @@ body {
 	font-family: 'Open Sans', sans-serif;
 	background-color: #C3FDB8; /*light jade*/
 	padding-left: 10%;
-}
+} 
+
+/*test*/
 
 #homeownerDiv, #guestDiv, #decaturTimeDiv, #anacortesTimeDiv {
 	padding-left: 50px;
