@@ -58,7 +58,8 @@ if($_POST){
 
 	//send on to completed page (or paypal if needed)
 	if($dataArray['paypal'] === "P"){
-		echo 'now we would redirect to paypal';
+        echo 'now we would redirect to paypal';
+        //header("Location: http://www.flessner.org/-jonTest/paypal.html");
 	}
 	else{
 		header("Location: http://www.flessner.org/-jonTest/resComplete.html");
