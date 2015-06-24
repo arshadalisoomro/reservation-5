@@ -3,8 +3,13 @@
     <head>
         <title>paypal redirect</title>
         <meta charset = "UTF-8">
+        <script>
+            //on page load submit form
+        </script>
     </head>
     <body>
+        <!-- add values, will all be global except amount which will be session -->
+        <!-- this will need to be encrypted into a button for security - look into further -->
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
             <input type="hidden" name="cmd" value="_xclick">
             <input type="hidden" name="business" value="">
