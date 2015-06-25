@@ -1,2 +1,5 @@
 *dbConnect.php
 *testSQLconn.php
+*composer.json
+*composer.lock
+*composer.phar
