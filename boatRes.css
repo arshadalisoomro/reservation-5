@@ -1,24 +1,20 @@
 body {
-	font-family: 'Open Sans', sans-serif;
-	background-color: #C3FDB8; /*light jade*/
-	padding-left: 10%;
-} 
-
-/*test*/
+  font-family: 'Open Sans', sans-serif;
+  background-color: #C3FDB8;
+  /*light jade*/
+  padding-left: 10%;
+}
 
 #homeownerDiv, #guestDiv, #decaturTimeDiv, #anacortesTimeDiv {
-	padding-left: 50px;
+  padding-left: 50px;
 }
-
 #guestCheckDiv, #toDecaturDiv, #toAnacortesDiv, #decaturTimeDiv, #anacortesTimeDiv {
-	display: none;
+  display: none;
 }
-
 #subMsg {
-	padding-left: 20px;
+  padding-left: 20px;
 }
-
-#homeownerReq, #guestReq, #requireGuestAccept, #emailReq, #phoneError, #guestNumError, #noTravellerError, #decBoatCountError, #anaBoatCountError, #tripTypeReq, #decaturDateReq, #decaturTimeReq, #anacortesDateReq, #anacortesTimeReq{
-	color: red;
-	display: none;
+#homeownerReq, #guestReq, #requireGuestAccept, #emailReq, #phoneError, #guestNumError, #noTravellerError, #decBoatCountError, #anaBoatCountError, #tripTypeReq, #decaturDateReq, #decaturTimeReq, #anacortesDateReq, #anacortesTimeReq {
+  color: red;
+  display: none;
 }
