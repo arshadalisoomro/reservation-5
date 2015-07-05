@@ -87,8 +87,8 @@ if($_POST){
 
 	$allData = array(
 		"sessionSet" => 'true',
-		"confirmationCode" => $confCode, 
-		"homeownerName" => $homeowner, 
+		"confirmationCode" => $confCode,
+		"homeownerName" => $homeowner,
 		"guestName" =>$guest,
 		"isGuest" => $isGuest,
 		"email" => $email,
@@ -119,7 +119,7 @@ if($_POST){
 
 	//close connection
 	$conn = null;
-	
+
 }
 //redirect if someone came here by accident/entering url
 else{
@@ -227,6 +227,11 @@ else{
 				//print total cost
 				$('#cost').html("Total cost: $" + sessionStorage.getItem('cost'));
 
+				//set paypal cost - formula to calculate with %3 fee
+				$('#paypalCost').html("Pay now with PayPal: $" + ((sessionStorage.getItem('cost') + .3) / .971);
+				//reiterate later cost
+				$('#laterCost').html("Pay later by check or homeowner charge: $" + sessionStorage.getItem('cost'));
+
 				//on submit
 				$('#confirm').on('submit', function(e){
 					//clear any error msg
@@ -241,7 +246,7 @@ else{
 					$('#confirm').serialize();
 				});
 			});
-			
+
 		</script>
 	</head>
 	<body>
@@ -256,8 +261,8 @@ else{
 		<form id="confirm" action="sendRes.php" method="post">
 			<div id="selectPayment">
 				<p>Select payment option:</p>
-				<p><input type="radio" name="payType" id="paypal" value="P">Pay now with PayPal.</p>
-				<p><input type="radio" name="payType" id="later" value="N">Pay later by check or homeowner charge.</p>
+				<p><input type="radio" name="payType" id="paypal" value="P"><div id="paypalCost"></div></p>
+				<p><input type="radio" name="payType" id="later" value="N"><div id="laterCost"></div></p>
 				<div id="selectPayError"></div>
 			</div>
 			<p><input id="theSubmit" type="submit" value="Confirm Reservation"><p>
