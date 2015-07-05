@@ -230,7 +230,16 @@ else{
 				$('#cost').html("Total cost: $" + sessionStorage.getItem('cost'));
 
 				//set paypal cost - formula to calculate with %3 fee
-				$('#paypalCost').html("Pay now with PayPal: $" + ((sessionStorage.getItem('cost') + .3) / .971);
+				//cast as Number
+				var paypalTotal = new Number(sessionStorage.getItem('cost'));
+				//add 30 cent flat fee
+				paypalTotal += .30;
+				// calculate 2.9% paypal fee
+				paypalTotal /= .971;
+				//round to two decimal places
+				paypalTotal = +paypalTotal.toFixed(2); //the plus allows us to return as number - doesn't do addition
+				//display to user
+				$('#paypalCost').html("Pay now with PayPal: $" + (paypalTotal));
 				//reiterate later cost
 				$('#laterCost').html("Pay later by check or homeowner charge: $" + sessionStorage.getItem('cost'));
 
