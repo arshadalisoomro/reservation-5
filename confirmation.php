@@ -226,8 +226,6 @@ else{
 					tripStr = "One way to Anacortes on " + printAnaDate + " at " + printAnaTime;
 					$('#trip').html(tripStr);
 				}
-				//print total cost
-				$('#cost').html("Total cost: $" + sessionStorage.getItem('cost'));
 
 				//set paypal cost - formula to calculate with %3 fee
 				//cast as Number
@@ -239,9 +237,9 @@ else{
 				//round to two decimal places
 				paypalTotal = +paypalTotal.toFixed(2); //the plus allows us to return as number - doesn't do addition
 				//display to user
-				$('#paypalCost').html("Pay now with PayPal: $" + (paypalTotal));
+				$('#paypalCost').html("<p><input type='radio' name='payType' id='paypal' value='P'>Pay now with PayPal: $" + (paypalTotal) + "</p>");
 				//reiterate later cost
-				$('#laterCost').html("Pay later by check or homeowner charge: $" + sessionStorage.getItem('cost'));
+				$('#laterCost').html('<p><input type="radio" name="payType" id="later" value="N">Pay later by check or homeowner charge: $' + sessionStorage.getItem('cost') + "</p>");
 
 				//on submit
 				$('#confirm').on('submit', function(e){
@@ -267,13 +265,12 @@ else{
 		<div id="phone"></div>
 		<div id="travellers"></div>
 		<div id="trip"></div>
-		<div id="cost"></div>
-		<button onclick="window.location.replace('/-jonTest/dnwC.html')">Go Back</button>
+		<p><button onclick="window.location.replace('/-jonTest/dnwC.html')">Go Back</button></p>
 		<form id="confirm" action="sendRes.php" method="post">
 			<div id="selectPayment">
 				<p>Select payment option:</p>
-				<p><input type="radio" name="payType" id="paypal" value="P"><div id="paypalCost"></div></p>
-				<p><input type="radio" name="payType" id="later" value="N"><div id="laterCost"></div></p>
+				<div id="paypalCost"></div>
+				<div id="laterCost"></div>
 				<div id="selectPayError"></div>
 			</div>
 			<p><input id="theSubmit" type="submit" value="Confirm Reservation"><p>
