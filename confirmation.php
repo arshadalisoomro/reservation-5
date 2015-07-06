@@ -234,10 +234,12 @@ else{
 				paypalTotal += .30;
 				// calculate 2.9% paypal fee
 				paypalTotal /= .971;
-				//round to two decimal places
-				paypalTotal = +paypalTotal.toFixed(2); //the plus allows us to return as number - doesn't do addition
+				console.log("Unrounded: " + paypalTotal);
+				//round to two decimal places mathematically - better performance than toFixed, don't need to worry about 1.005 edge case.
+				paypalTotal = Math.round(paypalTotal * 100) / 100;
+				console.log("Rounded: " + paypalTotal);
 				//display to user
-				$('#paypalCost').html("<p><input type='radio' name='payType' id='paypal' value='P'>Pay now with PayPal: $" + (paypalTotal) + "</p>");
+				$('#paypalCost').html('<p><input type="radio" name="payType" id="paypal" value="P">Pay now with PayPal: $' + (paypalTotal) + '</p>');
 				//reiterate later cost
 				$('#laterCost').html('<p><input type="radio" name="payType" id="later" value="N">Pay later by check or homeowner charge: $' + sessionStorage.getItem('cost') + "</p>");
 
