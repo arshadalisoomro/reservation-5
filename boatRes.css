@@ -14,7 +14,12 @@ body {
 #subMsg {
   padding-left: 20px;
 }
-#homeownerReq, #guestReq, #requireGuestAccept, #emailReq, #phoneError, #guestNumError, #noTravellerError, #decBoatCountError, #anaBoatCountError, #tripTypeReq, #decaturDateReq, #decaturTimeReq, #anacortesDateReq, #anacortesTimeReq {
+#homeownerReq, #guestReq, #requireGuestAccept, #emailReq, #phoneError, #guestNumError, #noTravellerError, 
+#decBoatCountError, #anaBoatCountError, #tripTypeReq, #decaturDateReq, #decaturTimeReq, #anacortesDateReq, 
+#anacortesTimeReq {
   color: red;
   display: none;
+}
+ #selectPayError {
+  color: red; 
 }

@@ -239,9 +239,10 @@ else{
 				paypalTotal = Math.round(paypalTotal * 100) / 100;
 				console.log("Rounded: " + paypalTotal);
 				//display to user
-				$('#paypalCost').html('<p><input type="radio" name="payType" id="paypal" value="P">Pay now with PayPal: $' + (paypalTotal) + '</p>');
+				$('#paypalCost').html('<p><input type="radio" name="payType" id="paypal" value="P">Pay now with PayPal or Credit Card (fees apply): $' + (paypalTotal) + '</p>');
 				//reiterate later cost
 				$('#laterCost').html('<p><input type="radio" name="payType" id="later" value="N">Pay later by check or homeowner charge: $' + sessionStorage.getItem('cost') + "</p>");
+				 
 
 				//on submit
 				$('#confirm').on('submit', function(e){
@@ -272,7 +273,10 @@ else{
 			<div id="selectPayment">
 				<p>Select payment option:</p>
 				<div id="paypalCost"></div>
-				<div id="laterCost"></div>
+				<div id="laterCost"></div>					
+				<a style="padding-left:20px"> Checks made to "DNW Community Association"</a>
+				<br />
+				<a style="padding-left:20px"> Homeowner Charge option only for homeowners with accounts in good standing.</a>
 				<div id="selectPayError"></div>
 			</div>
 			<p><input id="theSubmit" type="submit" value="Confirm Reservation"><p>
