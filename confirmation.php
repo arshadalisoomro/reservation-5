@@ -82,6 +82,10 @@ if($_POST){
 		}
 	}
 
+	//following two lines added 8/23/2015 by Sue - Also added one line for Timestamp in following array
+	$dt = mktime();
+	$datetime = date("Y-m-d h:i:s", $dt);
+
 	//start php session
 	session_start();
 
@@ -108,9 +112,10 @@ if($_POST){
 		"printDecDate" => $printDecDate,
 		"printAnaDate" => $printAnaDate,
 		"printDecTime" => $printDecTime,
-		"printAnaTime" => $printAnaTime,
+		"printAnaTime" => $printAnaTime,		
+		"Timestamp" => $datetime,
 	);
-
+	
 	//set php session var
 	$_SESSION['dataArray'] = $allData;
 

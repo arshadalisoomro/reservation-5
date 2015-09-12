@@ -41,7 +41,7 @@ if($_POST){
 	}
 	
 	//insert data into table
-	$qry = $conn->prepare("INSERT INTO reservationsDNW(confirmationCode, homeownerName, guestName, isGuest, email, phone, numAdultHomeowners, numChildHomeowners, numAdultGuests, numChildGuests, dateToDecatur, dateToAnacortes, timeToDecatur, timeToAnacortes, comments, paypal, cost) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+	$qry = $conn->prepare("INSERT INTO reservationsDNW(confirmationCode, homeownerName, guestName, isGuest, email, phone, numAdultHomeowners, numChildHomeowners, numAdultGuests, numChildGuests, dateToDecatur, dateToAnacortes, timeToDecatur, timeToAnacortes, comments, paypal, cost, Timestamp) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 	//remaining data in dataArray ready to be sent to server, originally set in confirmation.php
 	if(!$qry->execute($insertArray)){
 		echo "\ninsert failed\n";
