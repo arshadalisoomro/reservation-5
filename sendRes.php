@@ -107,7 +107,7 @@ if($_POST){
 		$message = $success . $codeEmail . $itinerary . $travellers . $enjoy;
 		$subject = 'DNW Boat Reservation ' . $dataArray['confirmationCode'];
 		$headers = 'From: jonathanflessner@gmail.com' . "\r\n";
-		mail($email,$subject,$message,$headers);
+        mail($dataArray['email'],$subject,$message,$headers);
 	}
 
 	$conn = null;
@@ -118,7 +118,7 @@ if($_POST){
         //header("Location: http://www.flessner.org/-jonTest/paypal.html");
 	}
 	else{
-		header("Location: http://www.flessner.org/-jonTest/resComplete.html");
+		//header("Location: http://www.flessner.org/-jonTest/resComplete.html");
 	}
 	
 
