@@ -86,8 +86,8 @@ if($_POST){
 		}
 
 		//send email here
-		$success = "You're reservation to DNW has been successfully made.\r\n";
-		$codeEmail = "You're confirmation code is: " . $dataArray['confirmationCode'] . "\r\n";
+		$success = "Your reservation to DNW has been successfully made.\r\n";
+		$codeEmail = "Your confirmation code is: " . $dataArray['confirmationCode'] . "\r\n";
 		if(!$dataArray['dateToDecatur']){
 			$itinerary = "The reservation is one way leaving Deactur on " . $AnacortesDate . " at " . $AnacortesTime . ".\r\n";
 		}
