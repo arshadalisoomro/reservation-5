@@ -17,7 +17,7 @@ $false = 0;
 
 if ($anaDate == $tomorrow){
 	$qry = $conn->prepare("SELECT DISTINCT departDecatur FROM boatsDNW WHERE departDate = ? AND isCancelled = 0 AND fromDecaturCount < ? AND departDecatur > ? ORDER BY departDecatur ASC");
-	$qry->execute(array($anaDate, $time));
+	$qry->execute(array($anaDate, $maxBoat, $time));
 }
 else {
 	$qry = $conn->prepare("SELECT DISTINCT departDecatur FROM boatsDNW WHERE departDate = ? AND isCancelled = 0 AND fromDecaturCount < ? ORDER BY departDecatur ASC");
