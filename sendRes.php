@@ -41,7 +41,26 @@ if($_POST){
 	}
 	
 	//insert data into table
-	$qry = $conn->prepare("INSERT INTO reservationsDNW(confirmationCode, homeownerName, guestName, isGuest, email, phone, numAdultHomeowners, numChildHomeowners, numAdultGuests, numChildGuests, dateToDecatur, dateToAnacortes, timeToDecatur, timeToAnacortes, comments, paypal, cost, Timestamp) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    $qry = $conn->prepare("INSERT INTO reservationsDNW(
+        confirmationCode,
+        homeownerName,
+        guestName,
+        isGuest,
+        email,
+        phone,
+        numAdultHomeowners,
+        numChildHomeowners,
+        numAdultGuests,
+        numChildGuests,
+        dateToDecatur,
+        dateToAnacortes,
+        timeToDecatur,
+        timeToAnacortes,
+        comments,
+        paypal,
+        cost,
+        timestamp)
+        VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 	//remaining data in dataArray ready to be sent to server, originally set in confirmation.php
 	if(!$qry->execute($insertArray)){
 		echo "\ninsert failed\n";
@@ -52,6 +71,43 @@ if($_POST){
 	}
 	else{
 		echo 'insert complete';
+		//format times
+		if ($dataArray['dateToDecatur']){
+			$tmp_time = strtotime($dataArray['dateToDecatur']);
+			$DecaturDate = date('l M jS, Y', $tmp_time);
+			$tmp_time = strtotime($dataArray['timeToDecatur']);
+			$DecaturTime = date('g:ia', $tmp_time);
+		}
+		if ($dataArray['dateToAnacortes']){
+			$tmp_time = strtotime($dataArray['dateToAnacortes']);
+			$AnacortesDate = date('l M jS, Y', $tmp_time);
+			$tmp_time = strtotime($dataArray['timeToAnacortes']);
+			$AnacortesTime = date('g:ia', $tmp_time);
+		}
+
+		//send email here
+		$success = "You're reservation to DNW has been successfully made.\r\n";
+		$codeEmail = "You're confirmation code is: " . $dataArray['confirmationCode'] . "\r\n";
+		if(!$dataArray['dateToDecatur']){
+			$itinerary = "The reservation is one way leaving Deactur on " . $AnacortesDate . " at " . $AnacortesTime . ".\r\n";
+		}
+		else if(!$dataArray['dateToAnacortes']){
+			$itinerary = "The reservation is one way leaving Anacortes on " . $DecaturDate . " at " . $DecaturTime . ".\r\n";
+		}
+		else{
+			$itinerary = "Depart Anacortes on " . $DecaturDate . " at " . $DecaturTime . ".\r\n" . "Depart Decatur on " . $AnacortesDate . " at " . $AnacortesTime . ".\r\n";
+		}
+		if($totalNumber < 2){
+			$travellers = "There is one traveller for this reservation.\r\n";
+		}
+		else{
+			$travellers = "There are " . $totalNumber . " travellers on this reservation.\r\n";
+		}
+		$enjoy = "Enjoy your trip!";
+		$message = $success . $codeEmail . $itinerary . $travellers . $enjoy;
+		$subject = 'DNW Boat Reservation ' . $dataArray['confirmationCode'];
+		$headers = 'From: jonathanflessner@gmail.com' . "\r\n";
+		mail($email,$subject,$message,$headers);
 	}
 
 	$conn = null;

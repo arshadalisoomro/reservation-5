@@ -82,9 +82,9 @@ if($_POST){
 		}
 	}
 
-	//following two lines added 8/23/2015 by Sue - Also added one line for Timestamp in following array
-	$dt = mktime();
-	$datetime = date("Y-m-d h:i:s", $dt);
+    // we need a timestamp to quickly determine when a reservation was made
+    // TODO: ensure this works across timezones
+	$timestamp = date("Y-m-d h:i:s");
 
 	//start php session
 	session_start();
@@ -113,7 +113,7 @@ if($_POST){
 		"printAnaDate" => $printAnaDate,
 		"printDecTime" => $printDecTime,
 		"printAnaTime" => $printAnaTime,		
-		"Timestamp" => $datetime,
+		"timestamp" => $timestamp,
 	);
 	
 	//set php session var
