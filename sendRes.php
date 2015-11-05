@@ -98,10 +98,10 @@ if($_POST){
 			$itinerary = "Depart Anacortes on " . $DecaturDate . " at " . $DecaturTime . ".\r\n" . "Depart Decatur on " . $AnacortesDate . " at " . $AnacortesTime . ".\r\n";
 		}
 		if($totalNumber < 2){
-			$travellers = "There is one traveller for this reservation.\r\n";
+			$travellers = "There is one passenger on this reservation.\r\n";
 		}
 		else{
-			$travellers = "There are " . $totalNumber . " travellers on this reservation.\r\n";
+			$travellers = "There are " . $totalNumber . " passengers on this reservation.\r\n";
 		}
 		$enjoy = "Enjoy your trip!";
 		$message = $success . $codeEmail . $itinerary . $travellers . $enjoy;
