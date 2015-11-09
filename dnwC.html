@@ -390,10 +390,10 @@
 					if(decPassCount + totalNum > maxPassengerCount){
 						var decSpacesLeft = (maxPassengerCount - decPassCount);
 						if (decSpacesLeft === 1){
-							$('#decBoatCountError').html("You have selected " + totalNum + " travelers for your boat to Decatur but there is only " + decSpacesLeft + " space available.");
+							$('#decBoatCountError').html("You have selected " + totalNum + " passengers for your boat to Decatur but there is only " + decSpacesLeft + " space available.");
 						}
 						else{
-							$('#decBoatCountError').html("You have selected " + totalNum + " travelers for your boat to Decatur but there are only " + decSpacesLeft + " spaces available.");
+							$('#decBoatCountError').html("You have selected " + totalNum + " passengers for your boat to Decatur but there are only " + decSpacesLeft + " spaces available.");
 						}
 						$('#decBoatCountError').show();
 						passCountFail += 1;
@@ -405,10 +405,10 @@
 					if(anaPassCount + totalNum > maxPassengerCount){
 						var anaSpacesLeft = (maxPassengerCount - anaPassCount);
 						if (anaSpacesLeft === 1){
-							$('#anaBoatCountError').html("You have selected " + totalNum + " travelers for your boat to Anacortes but there is only " + anaSpacesLeft + " space available.");
+							$('#anaBoatCountError').html("You have selected " + totalNum + " passengers for your boat to Anacortes but there is only " + anaSpacesLeft + " space available.");
 						}
 						else{
-							$('#anaBoatCountError').html("You have selected " + totalNum + " travelers for your boat to Anacortes but there are only " + anaSpacesLeft + " spaces available.");
+							$('#anaBoatCountError').html("You have selected " + totalNum + " passengers for your boat to Anacortes but there are only " + anaSpacesLeft + " spaces available.");
 						}
 						$('#anaBoatCountError').show();
 						passCountFail += 1;
@@ -462,7 +462,7 @@
 			</div>
 
 			<div id="travellerDiv">
-				<p>Number of Travelers - </p>
+				<p>Number of Passengers - </p>
 					<div id="homeownerDiv">
 					<p><label for="numAdultHomeowner">Adult homeowners:</label></p>
 					<p>
@@ -554,8 +554,8 @@
 						 ($20 round trip)
 					</p>
 					</div>
-				<div id="noTravellerError">You haven't added any travelers.</div>
-				<div id="guestNumError">There can be no more than 15 travelers per homeowner.</div>
+				<div id="noTravellerError">You haven't added any passengers.</div>
+				<div id="guestNumError">There can be no more than 15 passengers per homeowner.</div>
 			</div>
 
 			<p>Please select trip type:</p>

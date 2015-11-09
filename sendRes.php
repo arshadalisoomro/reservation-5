@@ -70,7 +70,7 @@ if($_POST){
 
 	}
 	else{
-		echo 'insert complete';
+		//echo 'insert complete';
 		//format times
 		if ($dataArray['dateToDecatur']){
 			$tmp_time = strtotime($dataArray['dateToDecatur']);
@@ -84,49 +84,71 @@ if($_POST){
 			$tmp_time = strtotime($dataArray['timeToAnacortes']);
 			$AnacortesTime = date('g:ia', $tmp_time);
 		}
-
-		//send email here
-		$success = "Your reservation to DNW has been successfully made.\r\n";
-		$codeEmail = "Your confirmation code is: " . $dataArray['confirmationCode'] . "\r\n";
-		if(!$dataArray['dateToDecatur']){
-			$itinerary = "The reservation is one way leaving Deactur on " . $AnacortesDate . " at " . $AnacortesTime . ".\r\n";
+        
+        //New send email code 11/8/15 using PHPMailer
+        
+        date_default_timezone_set('Etc/UTC');
+        
+        require_once('PHPMailer/PHPMailerAutoload.php');
+                
+        $success = "Your reservation to DNW has been successfully made.";		
+        $codeEmail = "Your confirmation code is: " . $dataArray['confirmationCode'];
+		if(!$dataArray['dateToDecatur']){		
+            $itinerary = "The reservation is one way leaving Decatur on " . $AnacortesDate . " at " . $AnacortesTime . ".";
 		}
 		else if(!$dataArray['dateToAnacortes']){
-			$itinerary = "The reservation is one way leaving Anacortes on " . $DecaturDate . " at " . $DecaturTime . ".\r\n";
+			$itinerary = "The reservation is one way leaving Anacortes on " . $DecaturDate . " at " . $DecaturTime . ".";
 		}
 		else{
-			$itinerary = "Depart Anacortes on " . $DecaturDate . " at " . $DecaturTime . ".\r\n" . "Depart Decatur on " . $AnacortesDate . " at " . $AnacortesTime . ".\r\n";
+			$itinerary = "Depart Anacortes on " . $DecaturDate . " at " . $DecaturTime . ".<br>" . "Depart Decatur on " . $AnacortesDate . " at " . $AnacortesTime . ".";
 		}
 		if($totalNumber < 2){
-			$travellers = "There is one passenger on this reservation.\r\n";
+			$travellers = "There is one passenger on this reservation.";
 		}
 		else{
-			$travellers = "There are " . $totalNumber . " passengers on this reservation.\r\n";
+			$travellers = "There are " . $totalNumber . " passengers on this reservation.";
 		}
 		$enjoy = "Enjoy your trip!";
-		$message = $success . $codeEmail . $itinerary . $travellers . $enjoy;
-		$subject = 'DNW Boat Reservation ' . $dataArray['confirmationCode'];
-		$headers = 'From: jonathanflessner@gmail.com' . "\r\n";
-        mail($dataArray['email'],$subject,$message,$headers);
-	}
-
-	$conn = null;
-
-	//send on to completed page (or paypal if needed)
-	if($dataArray['paypal'] === "P"){
-        echo 'now we would redirect to paypal';
-        //header("Location: http://www.flessner.org/-jonTest/paypal.html");
-	}
-	else{
-		//header("Location: http://www.flessner.org/-jonTest/resComplete.html");
-	}
+        
+        $mail = new PHPMailer(); // create a new object
+        $mail->isSMTP(); // enable SMTP
+        $mail->SMTPDebug = 0; // debugging: 2 = errors and messages, 1 = messages only
+        $mail->SMTPAuth = true; // authentication enabled
+        $mail->SMTPSecure = 'tls'; // secure transfer enabled REQUIRED for GMail use ssl or tls
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 587; // 587 or 465
+        $mail->IsHTML(true);
+        $mail->Username = "sueflessner@gmail.com";
+        $mail->Password = "***";  //keeping this out of github, replace only when publishing
+        $mail->SetFrom("sueflessner@gmail.com");
+        $mail->Subject = "DNW Boat Reservation";       
+        $mail->Body = $success . "<br>". $codeEmail . "<br>". $itinerary . "<br>". $travellers . "<br>". $enjoy;
+        $mail->AddAddress($dataArray['email']);
+        if(!$mail->Send())
+           {
+           echo "Mailer Error: " . $mail->ErrorInfo;
+           }
+           else
+           {
+           //echo "Message has been sent";
+           	if($dataArray['paypal'] === "P"){
+               echo 'now we would redirect to paypal';
+            header("Location: http://www.flessner.org/-jonTest/paypal.html");
+              	}
+	        else{
+	 	    header("Location: http://www.flessner.org/-jonTest/resComplete.html");
+	            }
+           }
+    
 	
+	//$conn = null;
 
+		
+}
 }
 //redirect if someone came here by accident/entering url
 else{
 	header("Location: http://www.flessner.org/-jonTest/dnwC.html");
 	die();
-}
-
+    }
 ?>

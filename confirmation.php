@@ -167,7 +167,7 @@ else{
 				var nAG = allInfo['numAdultGuest'];
 				var nCG = allInfo['numChildGuest'];
 				var tab = "&nbsp;&nbsp;&nbsp;&nbsp;"
-				var travStr = "Travelers: " + allInfo['totalNumber'] + " total<br>";
+				var travStr = "Passengers: " + allInfo['totalNumber'] + " total<br>";
 				var add = '';
 				if(nAH > 0){
 					if(nAH > 1){
