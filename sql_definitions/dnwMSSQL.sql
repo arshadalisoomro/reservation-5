@@ -20,7 +20,8 @@ timeToDecatur time,
 timeToAnacortes time,
 comments text,
 paypal varchar(1) NOT NULL DEFAULT 'N',
-cost smallmoney NOT NULL DEFAULT 0
+cost smallmoney NOT NULL DEFAULT 0,
+timestamp smalldatetime NOT NULL
 );
 
 CREATE TABLE boatsDNW (
