@@ -4,6 +4,10 @@
 if($_POST){
 	//connect to sql server with global $conn
 	require 'dbConnect.php';
+        //timezone is always west coast
+        date_default_timezone_set('America/Los_Angeles');
+        //set url variables
+        $reservations_url="http://www.flessner.org/-jonTest/reservations.html"
 
 	//set variables
 	$homeowner = $_POST['homeowner'];
@@ -26,8 +30,15 @@ if($_POST){
 		$isGuest = 0;
 	}
 
-	$totalNumber = $numAdultHomeowner + $numChildHomeowner + $numAdultGuest + $numChildGuest;
-	$cost = ($numAdultHomeowner*15) + ($numChildHomeowner*10) + ($numAdultGuest*35) + ($numChildGuest*20);
+        $totalNumber = $numAdultHomeowner +
+                       $numChildHomeowner +
+                       $numAdultGuest +
+                       $numChildGuest;
+
+        $cost = ($numAdultHomeowner*15) +
+                ($numChildHomeowner*10) +
+                ($numAdultGuest*35) +
+                ($numChildGuest*20);
 
 	if(!$toDecaturDate){
 		$toDecaturDate = '';
@@ -63,8 +74,10 @@ if($_POST){
 	}
 
 	//array of letters for confirmation code
-	//"G" removed purposefully due to its prominent place in multiple 6 letter hate words.
-	$charArray = array("A","B","C","D","E","F","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
+    //"G" removed purposefully due to its prominent place
+    //in multiple 6 letter hate words.
+    $charArray = array("A","B","C","D","E","F","H","I","J","K","L","M","N",
+                           "O","P","Q","R","S","T","U","V","W","X","Y","Z");
 	//confCode will be six random letters with repeats allowed
 	$confLength = 6;
 	//the code will loop until a valid conf code (non-duplicate is found)
@@ -75,15 +88,18 @@ if($_POST){
 			$confCode .= $charArray[mt_rand(0,24)];
 			$confLength--;
 		}
-		$test = $conn->query("SELECT DISTINCT confirmationCode FROM reservationsDNW WHERE confirmationCode = '".$confCode."'");
+                $test = $conn->query("SELECT DISTINCT confirmationCode
+                                      FROM reservationsDNW
+                                      WHERE confirmationCode =
+                                      '".$confCode."'");
+
 		$otherCode = $test->fetch();
 		if (!$otherCode){
 			$ccDup = 0;
 		}
 	}
 
-    // we need a timestamp to quickly determine when a reservation was made
-    // TODO: ensure this works across timezones
+    // we have default timezone set as America/Los_Angeles
 	$timestamp = date("Y-m-d h:i:s");
 
 	//start php session
@@ -119,7 +135,8 @@ if($_POST){
 	//set php session var
 	$_SESSION['dataArray'] = $allData;
 
-	//encode php array as json so it can be passed to javascript and local storage
+        //encode php array as json so it can be passed to
+        //javascript and local storage
 	$json = json_encode($allData);
 
 	//close connection
@@ -128,8 +145,8 @@ if($_POST){
 }
 //redirect if someone came here by accident/entering url
 else{
-	header("Location: http://www.flessner.org/-jonTest/dnwC.html");
-	die();
+    header("Location: ".$reservations_url);
+    die();
 }
 
 ?>
@@ -218,7 +235,7 @@ else{
 				var printAnaDate = allInfo['printAnaDate'];
 				var printAnaTime = allInfo['printAnaTime'];
 				if(printDecDate && printAnaDate){
-					tripStr = "Round Trip - <br>&nbsp;&nbsp;&nbsp;&nbsp;Going to Decatur Island on " + printDecDate + " at " + printDecTime + "<br>&nbsp;&nbsp;&nbsp;&nbsp;Going to Anacortes on " + printAnaDate + " at " + printAnaTime;
+                    tripStr = "Round Trip - <br>&nbsp;&nbsp;&nbsp;&nbsp;Going to Decatur Island on " + printDecDate + " at " + printDecTime + "<br>&nbsp;&nbsp;&nbsp;&nbsp;Going to Anacortes on " + printAnaDate + " at " + printAnaTime;
 					$('#trip').html(tripStr);
 				}
 				//case for one way to Decatur
@@ -273,7 +290,7 @@ else{
 		<div id="phone"></div>
 		<div id="travellers"></div>
 		<div id="trip"></div>
-		<p><button onclick="window.location.replace('/-jonTest/dnwC.html')">Go Back</button></p>
+		<p><button onclick="window.location.replace('/-jonTest/reservations.html')">Go Back</button></p>
 		<form id="confirm" action="sendRes.php" method="post">
 			<div id="selectPayment">
 				<p>Select payment option:</p>

@@ -4,6 +4,10 @@
 if($_POST){
 	//connect to sql server with global $conn
 	require 'dbConnect.php';
+  //set url variables
+	$reservations_url = "http://www.flessner.org/-jonTest/reservations.html"
+	$reservation_complete_url = "http://www.flessner.org/-jonTest/resComplete.html"
+	$paypal_url = "http://www.flessner.org/-jonTest/paypal.html"
 	//start session to retrieve data
 	session_start();
 	//put data into local var
@@ -16,7 +20,12 @@ if($_POST){
 	$dataArray['paypal'] = $_POST['payType'];
 
 	//remove data from array that will not be inserted into sql
-	unset($dataArray['sessionSet'], $dataArray['totalNumber'], $dataArray['printDecDate'], $dataArray['printAnaDate'], $dataArray['printDecTime'], $dataArray['printAnaTime']);
+	unset($dataArray['sessionSet'],
+		$dataArray['totalNumber'],
+		$dataArray['printDecDate'],
+		$dataArray['printAnaDate'],
+		$dataArray['printDecTime'],
+		$dataArray['printAnaTime']);
 
 	//alter paypal if needed from post var
 	foreach ($dataArray as $key => $val){
@@ -32,12 +41,20 @@ if($_POST){
 	//NEEDS BETTER ERROR HANDLING
 	//update passenger count on boatsDNW
 	if($dataArray['dateToDecatur']){
-		$decBoatCount = $conn->prepare("UPDATE boatsDNW SET fromAnacortesCount = fromAnacortesCount + ? WHERE departDate = ? AND departAnacortes = ?");
-		$decBoatCount->execute(array($totalNumber, $dataArray['dateToDecatur'], $dataArray['timeToDecatur']));
+		$decBoatCount = $conn->prepare("UPDATE boatsDNW
+			SET fromAnacortesCount = fromAnacortesCount + ?
+			WHERE departDate = ? AND departAnacortes = ?");
+		$decBoatCount->execute(array($totalNumber,
+			$dataArray['dateToDecatur'],
+			$dataArray['timeToDecatur']));
 	}
 	if($dataArray['dateToAnacortes']){
-		$anaBoatCount = $conn->prepare("UPDATE boatsDNW SET fromDecaturCount = fromDecaturCount + ? WHERE departDate = ? AND departDecatur = ?");
-		$anaBoatCount->execute(array($totalNumber, $dataArray['dateToAnacortes'], $dataArray['timeToAnacortes']));
+		$anaBoatCount = $conn->prepare("UPDATE boatsDNW
+			SET fromDecaturCount = fromDecaturCount + ?
+            WHERE departDate = ? AND departDecatur = ?");
+		$anaBoatCount->execute(array($totalNumber,
+			$dataArray['dateToAnacortes'],
+			$dataArray['timeToAnacortes']));
 	}
 	
 	//insert data into table
@@ -85,15 +102,13 @@ if($_POST){
 			$AnacortesTime = date('g:ia', $tmp_time);
 		}
         
-        //New send email code 11/8/15 using PHPMailer
-        
-        date_default_timezone_set('Etc/UTC');
+        //code to send email using PHPMailer
         
         require_once('PHPMailer/PHPMailerAutoload.php');
                 
-        $success = "Your reservation to DNW has been successfully made.";		
+        $success = "Your reservation to DNW has been successfully made.";
         $codeEmail = "Your confirmation code is: " . $dataArray['confirmationCode'];
-		if(!$dataArray['dateToDecatur']){		
+		if(!$dataArray['dateToDecatur']){
             $itinerary = "The reservation is one way leaving Decatur on " . $AnacortesDate . " at " . $AnacortesTime . ".";
 		}
 		else if(!$dataArray['dateToAnacortes']){
@@ -121,34 +136,27 @@ if($_POST){
         $mail->Username = "sueflessner@gmail.com";
         $mail->Password = "***";  //keeping this out of github, replace only when publishing
         $mail->SetFrom("sueflessner@gmail.com");
-        $mail->Subject = "DNW Boat Reservation";       
+        $mail->Subject = "DNW Boat Reservation";
         $mail->Body = $success . "<br>". $codeEmail . "<br>". $itinerary . "<br>". $travellers . "<br>". $enjoy;
         $mail->AddAddress($dataArray['email']);
-        if(!$mail->Send())
-           {
+        if(!$mail->Send()) {
            echo "Mailer Error: " . $mail->ErrorInfo;
-           }
-           else
-           {
-           //echo "Message has been sent";
-           	if($dataArray['paypal'] === "P"){
+        }
+        else {
+           if($dataArray['paypal'] === "P"){
                echo 'now we would redirect to paypal';
-            header("Location: http://www.flessner.org/-jonTest/paypal.html");
-              	}
-	        else{
-	 	    header("Location: http://www.flessner.org/-jonTest/resComplete.html");
-	            }
+               header("Location: ".$paypal_url);
            }
-    
-	
-	//$conn = null;
-
-		
-}
+	       else{
+		       header("Location: ".$reservation_complete_url);
+	       }
+        }
+    }
+	$conn = null;
 }
 //redirect if someone came here by accident/entering url
 else{
-	header("Location: http://www.flessner.org/-jonTest/dnwC.html");
+	header("Location: ".$reservations_url);
 	die();
     }
 ?>
