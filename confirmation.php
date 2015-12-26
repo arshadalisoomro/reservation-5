@@ -7,7 +7,7 @@ if($_POST){
         //timezone is always west coast
         date_default_timezone_set('America/Los_Angeles');
         //set url variables
-        $reservations_url="http://www.flessner.org/-jonTest/reservations.html"
+        $reservations_url="http://www.flessner.org/-jonTest/reservations.html";
 
 	//set variables
 	$homeowner = $_POST['homeowner'];

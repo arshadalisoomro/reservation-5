@@ -4,10 +4,10 @@
 if($_POST){
 	//connect to sql server with global $conn
 	require 'dbConnect.php';
-  //set url variables
-	$reservations_url = "http://www.flessner.org/-jonTest/reservations.html"
-	$reservation_complete_url = "http://www.flessner.org/-jonTest/resComplete.html"
-	$paypal_url = "http://www.flessner.org/-jonTest/paypal.html"
+    //set url variables
+	$reservations_url = "http://www.flessner.org/-jonTest/reservations.html";
+	$reservation_complete_url = "http://www.flessner.org/-jonTest/resComplete.html";
+	$paypal_url = "http://www.flessner.org/-jonTest/paypal.html";
 	//start session to retrieve data
 	session_start();
 	//put data into local var
