@@ -244,7 +244,7 @@ else{
 				paypalTotal = Math.round(paypalTotal * 100) / 100;
 				console.log("Rounded: " + paypalTotal);
 				//display to user
-				$('#paypalCost').html('<p><input type="radio" name="payType" id="paypal" value="P">Pay now with PayPal or Credit Card (fees apply): $' + (paypalTotal) + '</p>');
+				$('#paypalCost').html('<p><input type="radio" name="payType" id="paypal" value="P">Pay now with PayPal or Credit Card: $' + (paypalTotal) + ' (paypal fee included)</p>');
 				//reiterate later cost
 				$('#laterCost').html('<p><input type="radio" name="payType" id="later" value="N">Pay later by check or homeowner charge: $' + sessionStorage.getItem('cost') + "</p>");
 				 
