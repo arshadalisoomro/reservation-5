@@ -1,13 +1,13 @@
 <?php ini_set('display_errors', 'On'); ?>
 <?php
+//set url variables for redirect if no POST
+$reservations_url="http://www.flessner.org/-jonTest/reservations.html";
 //if post exists
 if($_POST){
 	//connect to sql server with global $conn
 	require 'dbConnect.php';
-        //timezone is always west coast
-        date_default_timezone_set('America/Los_Angeles');
-        //set url variables
-        $reservations_url="http://www.flessner.org/-jonTest/reservations.html";
+    //timezone is always west coast
+    date_default_timezone_set('America/Los_Angeles');
 
 	//set variables
 	$homeowner = $_POST['homeowner'];
@@ -145,7 +145,7 @@ if($_POST){
 }
 //redirect if someone came here by accident/entering url
 else{
-    header("Location: ".$reservations_url);
+    header("Location: $reservations_url");
     die();
 }
 

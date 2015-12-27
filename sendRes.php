@@ -1,13 +1,14 @@
 <?php ini_set('display_errors', 'On'); ?>
 <?php
 //redirect if not post - user arrived by entering url
+//set url variables for redirects
+$reservations_url = "http://www.flessner.org/-jonTest/reservations.html";
+$reservation_complete_url = "http://www.flessner.org/-jonTest/resComplete.html";
+$paypal_url = "http://www.flessner.org/-jonTest/paypal.html";
+
 if($_POST){
 	//connect to sql server with global $conn
 	require 'dbConnect.php';
-    //set url variables
-	$reservations_url = "http://www.flessner.org/-jonTest/reservations.html";
-	$reservation_complete_url = "http://www.flessner.org/-jonTest/resComplete.html";
-	$paypal_url = "http://www.flessner.org/-jonTest/paypal.html";
 	//start session to retrieve data
 	session_start();
 	//put data into local var
@@ -145,10 +146,10 @@ if($_POST){
         else {
            if($dataArray['paypal'] === "P"){
                echo 'now we would redirect to paypal';
-               header("Location: ".$paypal_url);
+               header("Location: $paypal_url");
            }
 	       else{
-		       header("Location: ".$reservation_complete_url);
+		       header("Location: $reservation_complete_url");
 	       }
         }
     }
@@ -156,7 +157,7 @@ if($_POST){
 }
 //redirect if someone came here by accident/entering url
 else{
-	header("Location: ".$reservations_url);
+	header("Location: $reservations_url");
 	die();
     }
 ?>
