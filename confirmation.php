@@ -169,7 +169,7 @@ else{
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="boatRes.css">
-    <script src="js/confirmation.js"></script>
+    <script src="confirmation.js"></script>
 </head>
 <body>
     <div id="homeowner"></div>
