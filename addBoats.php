@@ -1,3 +1,4 @@
+<?php ini_set('display_errors', 'On'); ?>
 <?php
 
 //this script maintains the database and adds new boats anytime
