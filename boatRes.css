@@ -8,14 +8,16 @@ body {
 #homeownerDiv, #guestDiv, #decaturTimeDiv, #anacortesTimeDiv {
   padding-left: 50px;
 }
-#guestCheckDiv, #toDecaturDiv, #toAnacortesDiv, #decaturTimeDiv, #anacortesTimeDiv {
+#guestCheckDiv, #toDecaturDiv, #toAnacortesDiv,
+#decaturTimeDiv, #anacortesTimeDiv {
   display: none;
 }
 #subMsg {
   padding-left: 20px;
 }
-#homeownerReq, #guestReq, #requireGuestAccept, #emailReq, #phoneError, #guestNumError, #noTravellerError, 
-#decBoatCountError, #anaBoatCountError, #tripTypeReq, #decaturDateReq, #decaturTimeReq, #anacortesDateReq, 
+#homeownerReq, #guestReq, #requireGuestAccept, #emailReq, #phoneError, 
+#guestNumError, #noTravellerError, #decBoatCountError, #anaBoatCountError, 
+#tripTypeReq, #decaturDateReq, #decaturTimeReq, #anacortesDateReq, 
 #anacortesTimeReq {
   color: red;
   display: none;
