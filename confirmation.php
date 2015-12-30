@@ -169,7 +169,9 @@ else{
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="boatRes.css">
-    <script src="confirmation.js"></script>
+    <!-- echo php info into js var -->
+    <script><?php echo "var allInfo = " . $json . ";";?></script>
+    <script src="confirmation.js"></script>    
 </head>
 <body>
     <div id="homeowner"></div>
@@ -187,11 +189,12 @@ else{
             <div id="paypalCost"></div>
             <div id="laterCost"></div>                  
             <a style="padding-left:20px"> 
-                Checks made to "DNW Community Association"
+                - Checks made out to "DNW Community Association"
             </a>
             <br />
             <a style="padding-left:20px">
-                Homeowner Charge option only for homeowners with accounts in good standing.
+                - Homeowner Charge option only for
+                homeowners with accounts in good standing.
             </a>
             <div id="selectPayError"></div>
         </div>

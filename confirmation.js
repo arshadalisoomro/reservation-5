@@ -3,9 +3,8 @@
 $(function (){
     //clear any old sessionStorage, no longer needed
     sessionStorage.clear();
-    
-    //get php data, set html session storage
-    <?php echo "var allInfo = " . $json . ";";?>
+
+    //allInfo is set in confirmation.php
     for (var key in allInfo){
         sessionStorage.setItem(key, allInfo[key]);
     }
@@ -131,7 +130,8 @@ $(function (){
         'value="P">Pay now with PayPal or Credit Card: $' +
         (paypalTotal) + ' <i>(PayPal fee included)</i></p>');
     //reiterate later cost
-    $('#laterCost').html('<p><input type="radio" name="payType" id="later"' +
+    $('#laterCost').html('<p style="margin-bottom: .1em;">' +
+        '<input type="radio" name="payType" id="later"' +
         'value="N">Pay later by check or homeowner charge: $' +
         sessionStorage.getItem('cost') + "</p>");
      
