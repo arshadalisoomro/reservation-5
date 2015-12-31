@@ -7,6 +7,9 @@
 //connect to sql server with global $conn
 require 'dbConnect.php';
 
+//set timezone to west coast
+date_default_timezone_set('America/Los_Angeles');
+
 //delete all boats older than 60 days to maintain database
 $oldDate = new DateTime();
 $oldDate->modify('-60 day');
