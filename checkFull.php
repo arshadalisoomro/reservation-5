@@ -6,6 +6,8 @@
 //connect to sql server with global $conn
 require 'dbConnect.php';
 
+date_default_timezone_set('America/Los_Angeles');
+
 $maxBoat = 55;
 
 $date = $_GET['date'];

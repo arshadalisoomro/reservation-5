@@ -33,3 +33,12 @@ departDecatur time,
 fromDecaturCount tinyint DEFAULT 0 NOT NULL,
 isCancelled bit DEFAULT 0 NOT NULL
 );
+
+#used for login into admin tools
+#entries are manually added
+#same INSERT INTO adminLogin (username, password) VALUES ('admin', 'pass');
+CREATE TABLE adminLogin (
+id int IDENTITY PRIMARY KEY,
+username varchar(255) NOT NULL UNIQUE,
+password varchar(255) NOT NULL
+);
