@@ -3,7 +3,7 @@
 
 //this page displays the information the user set for their reservation
 //so they can determine if it is all correct, it then has the user
-//select how they would like to pay after calculating what their cost is
+//select how they would like to pay after calculating the cost
 
 //set url variables for redirect if no POST
 $reservations_url="http://www.flessner.org/-jonTest/reservations.html";
@@ -27,7 +27,7 @@ if($_POST){
     $toAnacortesDate = $_POST['toAnacortesDate'];
     $toDecaturTime = $_POST['decaturTime'];
     $toAnacortesTime = $_POST['anacortesTime'];
-    $comment = $_POST['comment'];
+    $comment = $_POST['comment'];	
     //set binary guest variable
     if($_POST['checkGuest']){
         $isGuest = 1;
@@ -45,6 +45,12 @@ if($_POST){
             ($numChildHomeowner*10) +
             ($numAdultGuest*35) +
             ($numChildGuest*20);
+
+    // use Tcost for testing on live PayPal account
+	// change it in dataArray below for in place of $cost
+    $Tcost = 1;
+
+          
     //decatur date
     if(!$toDecaturDate){
         $toDecaturDate = '';
@@ -136,7 +142,7 @@ if($_POST){
         "timeToAnacortes" => $toAnacortesTime,
         "comments" => $comment,
         "paypal" => 'N',
-        "cost" => $cost,
+        "cost" => $cost,		
         "printDecDate" => $printDecDate,
         "printAnaDate" => $printAnaDate,
         "printDecTime" => $printDecTime,
@@ -183,22 +189,17 @@ else{
     <p><button onclick="window.location.replace('/-jonTest/reservations.html')">
         Go Back
     </button></p>
-    <form id="confirm" action="sendRes.php" method="post">
-        <div id="selectPayment">
-            <p>Select payment option:</p>
-            <div id="paypalCost"></div>
-            <div id="laterCost"></div>                  
-            <a style="padding-left:20px"> 
-                - Checks made out to "DNW Community Association"
-            </a>
-            <br />
-            <a style="padding-left:20px">
-                - Homeowner Charge option only for
-                homeowners with accounts in good standing.
-            </a>
-            <div id="selectPayError"></div>
-        </div>
-        <p><input id="theSubmit" type="submit" value="Confirm Reservation"><p>
-    </form>
+	<br />   
+
+		   	 
+    <p>	
+	<form id="confirm" action="paymentOptions.php" method="post"> 
+	<input type="submit" name="submit" value="Confirm and Display Payment Options"> 	   
+	</form>
+    </p>
+  
 </body>
 </html>
+
+
+ 

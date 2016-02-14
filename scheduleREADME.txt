@@ -23,8 +23,8 @@ Sun - 10, 16
 Weekly Schedule from last Monday in May to first Monday in September:
 Sun - 10, 16
 Mon - 10, 16
-Tue - 10, 16
-Wed - None
+Tue - None
+Wed - 10, 16
 Thu - 10, 16
 Fri - 10, 16, 19:30
 Sat - 10, 16

@@ -111,41 +111,24 @@ $(function (){
         $('#trip').html(tripStr);
     }
 
-    //set paypal cost - formula to calculate with %3 fee
-    //cast as Number
-    var paypalTotal = new Number(sessionStorage.getItem('cost'));
-    //add 30 cent flat fee
-    paypalTotal += .30;
-    // calculate 2.9% paypal fee
-    paypalTotal /= .971;
-    console.log("Unrounded: " + paypalTotal);
-    //round to two decimal places mathematically
-    //Math.round() has better performance than toFixed
-    //don't need to worry about 1.005 edge case.
-    paypalTotal = Math.round(paypalTotal * 100) / 100;
-    console.log("Rounded: " + paypalTotal);
-    
-    //display paypal cost to user
-    $('#paypalCost').html('<p><input type="radio" name="payType" id="paypal"' +
-        'value="P">Pay now with PayPal or Credit Card: $' +
-        (paypalTotal) + ' <i>(PayPal fee included)</i></p>');
     //reiterate later cost
-    $('#laterCost').html('<p style="margin-bottom: .1em;">' +
-        '<input type="radio" name="payType" id="later"' +
-        'value="N">Pay later by check or homeowner charge: $' +
-        sessionStorage.getItem('cost') + "</p>");
-     
+    //$('#laterCost').html('<p style="margin-bottom: .1em;">' +
+    //    '<input type="button" name="payType" id="later"' +
+    //    'value="N">Pay later by check or homeowner charge: $' +
+    //   sessionStorage.getItem('cost') + "</p>");
+
     //on submit
-    $('#confirm').on('submit', function(e){
+    //$('#confirm').on('submit', function (e) {
         //clear any error msg
-        $('#selectPayError').html("");
+     //   $('#selectPayError').html("");
         //if no radio button selected
-        if(!$('[name="payType"]').is(':checked')){
+     //   if (!$('[name="payType"]').is(':checked')) {
             //show error msg, prevent default
-            $('#selectPayError').html("You must select a payment option.");
-            e.preventDefault();
-        }
+     //       $('#selectPayError').html("You must select a payment option.");
+     //       e.preventDefault();
+    //   }
         //payment selected, submit
-        $('#confirm').serialize();
-    });
+    //    $('#confirm').serialize();
+  // }); 
+
 });
