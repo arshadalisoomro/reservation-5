@@ -6,8 +6,6 @@
 //redirect if not post - user arrived by entering url
 //set url variables for redirects
 $reservations_url = "http://www.flessner.org/-jonTest/reservations.html";
-//$reservation_complete_url = "http://www.flessner.org/-jonTest/???.php";
-//$paypal_url = "http://www.flessner.org/-jonTest/paypal.html";
 
 if($_POST){
     //connect to sql server with global $conn
@@ -18,8 +16,7 @@ if($_POST){
     $dataArray = $_SESSION['dataArray'];
     //get total number since will be needed
     $totalNumber = $dataArray['totalNumber'];
-    $cost = $dataArray['cost'];
-    $paypalTotal = $dataArray['paypalTotal'];
+    $cost = $dataArray['cost'];    
     $confCode= $dataArray['confirmationCode'];
     $dataArray['paypal'] = "N";
     
@@ -153,15 +150,17 @@ if($_POST){
         $mail->SMTPDebug = 0;
         $mail->SMTPAuth = true;
         // secure transfer enabled REQUIRED for GMail use ssl or tls
-        $mail->SMTPSecure = 'tls';
-        $mail->Host = "smtp.gmail.com";
-        // 587 or 465
-        $mail->Port = 587;
+        //$mail->SMTPSecure = 'tls';
+        $mail->Host = "webmail.flessner.org";
+        // 587 or 465  (or 25 for mail from discount.asp)
+        $mail->Port = 25;
         $mail->IsHTML(true);
-        $mail->Username = "sueflessner@gmail.com";
+        //$mail->Username = "sueflessner@gmail.com";
+		$mail->Username = "reservations@flessner.org";
         //keeping this out of github, replace only when publishing
         $mail->Password = "****";
-        $mail->SetFrom("sueflessner@gmail.com");
+        //$mail->SetFrom("sueflessner@gmail.com");
+        $mail->SetFrom("reservations@flessner.org");
         $mail->Subject = "DNW Boat Reservation";
         $mail->Body = $success . "<br>" . $codeEmail . "<br>" . $itinerary .
             "<br>". $travellers . "<br>".$onboatCost . "<br>". $enjoy;
@@ -198,11 +197,11 @@ else{
 
         <!--  PayPal BUTTON CODE -->
         <p>
-            <!-- <form action="https://www.paypal.com/cgi-bin/webscr" method="post"> -->
-            <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post"> 
+            <!-- <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post"> -->
             <input type="hidden" name="cmd" value="_xclick">
-            <!-- <input type="hidden" name="business" value="paulfle@comcast.net"> -->
-            <input type="hidden" name="business" value="seller_1352609590_biz@comcast.net"> 
+            <input type="hidden" name="business" value="paulfle@comcast.net">
+            <!--  <input type="hidden" name="business" value="paulfle-facilitator@comcast.net"> -->
             <input type="hidden" name="item_name" value="DNW Boat Reservation"> 
             <input type="hidden" name="amount" value="<?= $paypalTotal ?>"> 
 			<input type="hidden" name="custom" value="<?=$confCode ?>">
@@ -214,7 +213,10 @@ else{
                    src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/pp-acceptance-small.png"
                    alt="Check out with PayPal">
             Pay now by PayPal or Credit Card: $ <?= $paypalTotal ?>  <i>(PayPal fee included) </i>
-            </form>
+            </form>  
+
+			
+
         </p>
         <br />
 

@@ -48,7 +48,7 @@ if($_POST){
 
     // use Tcost for testing on live PayPal account
 	// change it in dataArray below for in place of $cost
-    $Tcost = 1;
+    $Tcost = .1;
 
           
     //decatur date

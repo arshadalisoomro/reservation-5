@@ -1,15 +1,13 @@
-<?php ini_set('display_errors', 'On'); ?>
 <?php
 
 require 'dbConnect.php';
-
-/* CONFIG: Enable debug mode. This means we'll log requests into 'ipn.log' in the same directory.
+// CONFIG: Enable debug mode. This means we'll log requests into 'ipn.log' in the same directory.
 // Especially useful if you encounter network errors or other intermittent problems with IPN (validation).
 // Set this to 0 once you go live or don't require logging.
-define("DEBUG", 0);
+define("DEBUG", 1);
 // Set to 0 once you're ready to go live
-define("USE_SANDBOX", 1);
-//define("LOG_FILE", "./ipn.log");
+define("USE_SANDBOX", 0);
+define("LOG_FILE", "./ipn.log");
 // Read POST data
 // reading posted data directly from $_POST causes serialization
 // issues with array data in POST. Reading raw POST data from input stream instead.
@@ -29,10 +27,11 @@ if(function_exists('get_magic_quotes_gpc')) {
 foreach ($myPost as $key => $value) {
     if($get_magic_quotes_exists == true && get_magic_quotes_gpc() == 1) {
         $value = urlencode(stripslashes($value));
-    } else {
+    }
+    else {
         $value = urlencode($value);
     }
-    $req .= "&$key=$value";
+$req .= "&$key=$value";
 }
 // Post IPN data back to PayPal to validate the IPN data is genuine
 // Without this step anyone can fake IPN data
@@ -42,10 +41,6 @@ if(USE_SANDBOX == true) {
     $paypal_url = "https://www.paypal.com/cgi-bin/webscr";
 }
 $ch = curl_init($paypal_url);
-
-$sql = $conn->prepare("UPDATE reservationsDNW SET comments = 'first test'  WHERE confirmationCode = 'JYWSVW'");
-$sql->execute();
-$conn = null;
 
 if ($ch == FALSE) {
     return FALSE;
@@ -66,72 +61,94 @@ if(DEBUG == true) {
 //curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 1);
 // Set TCP timeout to 30 seconds
 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
-//curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
-curl_setopt($ch, CURLOPT_HTTPHEADER, array('Host: www.sandbox.paypal.com'));
+curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
 // CONFIG: Please download 'cacert.pem' from "http://curl.haxx.se/docs/caextract.html" and set the directory path
 // of the certificate as shown below. Ensure the file is readable by the webserver.
 // This is mandatory for some environments.
-$cert = __DIR__ . "./cacert.pem";
+$cert = __DIR__ . "\cacert.pem";
 curl_setopt($ch, CURLOPT_CAINFO, $cert);
 
 $res = curl_exec($ch);
 
-$sql = $conn->prepare("UPDATE reservationsDNW SET paypal = 'C'  WHERE confirmationCode = 'WVIPKW'");
-$sql->execute();
-$conn = null;
-
-if (curl_errno($ch) != 0) // cURL error
-	{
-    
-	if(DEBUG == true) {	        
-		error_log(date('[Y-m-d H:i e] '). "Can't connect to PayPal to validate IPN message: " . curl_error($ch) . PHP_EOL, 3, LOG_FILE);
-	}
-    $ce = curl_errno($ch)
-	curl_close($ch);
-    $sql = $conn->prepare("UPDATE reservationsDNW SET comments = '($ce)' WHERE confirmationCode = 'EDBORE'");
-    $sql->execute();
-    $conn = null;
+if (curl_errno($ch) != 0) {        
+    if(DEBUG == true) {	        
+		error_log(date('[Y-m-d H:i e] '). "Can't connect to PayPal to validate IPN message: " . curl_error($ch) . PHP_EOL, 3, LOG_FILE);	    
+    }  
+	curl_close($ch);    
 	exit;
-} else {
-       $sql = $conn->prepare("UPDATE reservationsDNW SET comments = 'no curl error'  WHERE confirmationCode = 'EDBORE'");
-       $sql->execute();
-       $conn = null;
-		// Log the entire HTTP response if debug is switched on.
-		if(DEBUG == true) {             
-            error_log(date('[Y-m-d H:i e] '). "HTTP request of validation request:". curl_getinfo($ch, CURLINFO_HEADER_OUT) ." for IPN payload: $req" . PHP_EOL, 3, LOG_FILE);
-			error_log(date('[Y-m-d H:i e] '). "HTTP response of validation request: $res" . PHP_EOL, 3, LOG_FILE);
-		}
-		curl_close($ch);
+} 
+else {     
+	// Log the entire HTTP response if debug is switched on.
+	if(DEBUG == true) {             
+        error_log(date('[Y-m-d H:i e] '). "HTTP request of validation request: ". curl_getinfo($ch, CURLINFO_HEADER_OUT) ." for IPN payload: $req" . PHP_EOL, 3, LOG_FILE);
+	    error_log(date('[Y-m-d H:i e] '). "HTTP response of validation request: $res" . PHP_EOL, 3, LOG_FILE);        
+	}	
 }
-
 
 // Inspect IPN validation result and act accordingly
 // Split response headers and payload, a better way for strcmp
 $tokens = explode("\r\n\r\n", trim($res));
-$res = trim(end($tokens)); */
-if (strcmp ($res, "VERIFIED") == 0) {
-
-        $sql = $conn->prepare("UPDATE reservationsDNW SET paypal = 'S' WHERE confirmationCode = 'PKWYYD'");
-        $sql->execute();
-        $conn = null;
+$res = trim(end($tokens)); 
+        
+if (strcmp ($res, "VERIFIED") == 0) {  
+   $payment_status = $_POST['payment_status'];
+   $receiver_email = $_POST['receiver_email'];
+   $payment_amount = $_POST['mc_gross'];
+   $conf_code = $_POST['custom'];   
+   // check that receiver email is correct
+   if ($receiver_email = 'paulfle@comcast.net') {    
+      // and check that payment status is complete
+      if ($payment_status = 'Completed') {    
+          // update database
+          $sql = $conn->prepare("UPDATE reservationsDNW SET paypal = 'Y' WHERE confirmationCode = '$conf_code'");
+          $sql->execute();
+          $sql = $conn->prepare("UPDATE reservationsDNW SET cost = $payment_amount WHERE confirmationCode = '$conf_code'");
+          $sql->execute();
+          $conn = null;    
+          curl_close($ch);
+      }   
+      // if status not complete, check if status is pending
+      else {
+           if ($payment_status = "Pending") {   
+               // update database
+               $sql = $conn->prepare("UPDATE reservationsDNW SET paypal = 'P' WHERE confirmationCode = '$conf_code'");
+               $sql->execute();
+               $sql = $conn->prepare("UPDATE reservationsDNW SET cost = $payment_amount WHERE confirmationCode = '$conf_code'");
+               $sql->execute();
+               $conn = null;  
+               curl_close($ch);
+           }    
+           else {
+               if(DEBUG == true) {	      
+	  	       error_log(date('[Y-m-d H:i e] '). "Payment status not Completed or Pending: " . PHP_EOL, 3, LOG_FILE);   
+               curl_close($ch);
+               }
+           }  
+      }     
+   }  
+   else {
+        if(DEBUG == true) {	        
+	    	error_log(date('[Y-m-d H:i e] '). "Receiver email invalid: "  . PHP_EOL, 3, LOG_FILE);  
+            curl_close($ch);
+        }
+   }     
 }
-else{
-      if (strcmp ($res, "INVALID") == 0) {
-        $sql = $conn->prepare("UPDATE reservationsDNW SET paypal = 'M' WHERE confirmationCode = 'PKWYYD'");
-        $sql->execute();
-        $conn = null;
-  
+else{ 
+   if (strcmp ($res, "INVALID") == 0) {   
+        if(DEBUG == true) {	       
+	    	error_log(date('[Y-m-d H:i e] '). "Returned INVALID message: " . PHP_EOL, 3, LOG_FILE);  
+            curl_close($ch);
+        }            
    }
-   
-   else{
-   $sql = $conn->prepare("UPDATE reservationsDNW SET paypal = 'Z' WHERE confirmationCode = 'PKWYYD'");
-        $sql->execute();
-   $sql = $conn->prepare("UPDATE reservationsDNW SET comments = ('emptyString') WHERE confirmationCode = 'PKWYYD'");
-        $sql->execute();
-        $conn = null;
+   else {
+         if(DEBUG == true) {	       
+	    	error_log(date('[Y-m-d H:i e] '). "Res returned not Valid or Invalid: " . PHP_EOL, 3, LOG_FILE);   
+            curl_close($ch);
+        }    
    }
-   }
-   
+}
+
+ 
     // check whether the payment_status is Completed
     // check that txn_id has not been previously processed
     // check that receiver_email is your PayPal email
@@ -147,19 +164,6 @@ else{
     //$receiver_email = $_POST['receiver_email'];
     //$payer_email = $_POST['payer_email'];
 
-    //*if(DEBUG == true) {
-      //  error_log(date('[Y-m-d H:i e] '). "Verified IPN: $req ". PHP_EOL, 3, LOG_FILE);
 
-   // }
-
-//} else if (strcmp ($res, "INVALID") == 0) {
-    // log for manual investigation
-    // Add business logic here which deals with invalid IPN messages
-   // if(DEBUG == true) {
-    //    error_log(date('[Y-m-d H:i e] '). "Invalid IPN: $req" . PHP_EOL, 3, LOG_FILE);
-
-   // }
-
-//}
 ?>
 
