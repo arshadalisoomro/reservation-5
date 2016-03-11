@@ -17,6 +17,7 @@ if($_POST){
     //get total number since will be needed
     $totalNumber = $dataArray['totalNumber'];
     $cost = $dataArray['cost'];    
+	$costDisplay = number_format($cost, 2);
     $confCode= $dataArray['confirmationCode'];
     $dataArray['paypal'] = "N";
     
@@ -120,8 +121,10 @@ if($_POST){
         $success = "Your reservation to DNW has been successfully made.";
         $codeEmail = "Your confirmation code is: " .
             $dataArray['confirmationCode'];
+        //$onboatCost = "Trip cost (if not already paid by PayPal): $" .
+		//    $dataArray['cost'];
         $onboatCost = "Trip cost (if not already paid by PayPal): $" .
-		    $dataArray['cost'];
+		    $costDisplay;
         if(!$dataArray['dateToDecatur']){
             $itinerary = "The reservation is one way leaving Decatur on " .
             $AnacortesDate . " at " . $AnacortesTime . ".";
@@ -143,7 +146,12 @@ if($_POST){
             " passengers on this reservation.";
         }
         $enjoy = "Enjoy your trip!";
+		//adding Kathy's message 
+		$query = $conn->query("SELECT RespondMsg FROM AppData WHERE ID = 1");	     
+		$result = $query->fetch(PDO::FETCH_ASSOC);
+		$addtlinfo = $result['RespondMsg'];
         
+		        
         $mail = new PHPMailer(); // create a new object
         $mail->isSMTP();
         // debugging: 2 = errors and messages, 1 = messages only
@@ -154,16 +162,15 @@ if($_POST){
         $mail->Host = "webmail.flessner.org";
         // 587 or 465  (or 25 for mail from discount.asp)
         $mail->Port = 25;
-        $mail->IsHTML(true);
-        //$mail->Username = "sueflessner@gmail.com";
+        $mail->IsHTML(true);        
 		$mail->Username = "reservations@flessner.org";
         //keeping this out of github, replace only when publishing
-        $mail->Password = "****";
-        //$mail->SetFrom("sueflessner@gmail.com");
+        $mail->Password = "****";       
         $mail->SetFrom("reservations@flessner.org");
         $mail->Subject = "DNW Boat Reservation";
         $mail->Body = $success . "<br>" . $codeEmail . "<br>" . $itinerary .
-            "<br>". $travellers . "<br>".$onboatCost . "<br>". $enjoy;
+            "<br>". $travellers . "<br>".$onboatCost . "<br>". "<br>". $addtlinfo . "<br>" . 
+			"<br>" . $enjoy;
         $mail->AddAddress($dataArray['email']);
         if(!$mail->Send()) {
            echo "Mailer Error: " . $mail->ErrorInfo;
@@ -224,7 +231,7 @@ else{
         <p>
             <form id="confirm" action="resComplete.html">
                 <input type="submit" name="submit" value="Pay Later"></input>
-                 Pay Later with by Check or Homeowner Charge: $ <?= $cost ?>
+                 Pay Later with by Check or Homeowner Charge: $ <?= $costDisplay ?>
                  <br />
                  <br />
                  <a style="padding-left:20px">

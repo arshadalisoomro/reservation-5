@@ -36,15 +36,27 @@ if($_POST){
         $isGuest = 0;
     }
     //calculate total number travelers
+	 
     $totalNumber = $numAdultHomeowner +
                    $numChildHomeowner +
                    $numAdultGuest +
                    $numChildGuest;
-    //calculate total cost
-    $cost = ($numAdultHomeowner*15) +
-            ($numChildHomeowner*10) +
-            ($numAdultGuest*35) +
-            ($numChildGuest*20);
+
+
+       //calculate total cost
+	   //see if one way to Anacortes; if so, cost is half price
+    if(!$toDecaturDate){
+	   $cost = ($numAdultHomeowner*7.5) +
+               ($numChildHomeowner*5) +
+               ($numAdultGuest*17.5) +
+               ($numChildGuest*10);
+    }
+	else{  
+       $cost = ($numAdultHomeowner*15) +
+               ($numChildHomeowner*10) +
+               ($numAdultGuest*35) +
+               ($numChildGuest*20);
+    }
 
     // use Tcost for testing on live PayPal account
 	// change it in dataArray below for in place of $cost
