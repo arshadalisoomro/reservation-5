@@ -198,6 +198,7 @@ else{
     <div id="phone"></div>
     <div id="travellers"></div>
     <div id="trip"></div>
+	<div id="comments"></div>
     <p><button onclick="window.location.replace('/-jonTest/reservations.html')">
         Go Back
     </button></p>

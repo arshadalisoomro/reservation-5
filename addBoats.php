@@ -47,6 +47,10 @@ else{
 $memorialDay = new DateTime("Last Monday of May");
 $laborDay = new DateTime("First Monday of September");
 
+//get values of daylight savings time start and end
+$daylightSaveEnd = new DateTime("First Sunday of November");
+$daylightSaveStart = new DateTime("Second Sunday of March");
+
 //takes a date object, returns a boolean
 //1 if between memorial and labor day, 0 if not
 function testSummer($testDate) {
@@ -62,10 +66,26 @@ function testSummer($testDate) {
 
 }
 
+//takes a date object, returns a boolean
+//1 if between Daylight Savings End to Daylight Savings Start, 0 if not
+function testDaylightOff($testDate2) {
+    //set as globals so only calculated once
+    global $daylightSaveEnd, $dayightSaveStart;
+
+    if ($testDate2 > $daylightSaveEnd && $testDate < $daylightSaveStart){
+        return true;
+    }
+    else{
+        return false;
+    }
+
+}
+
 //insert boats up to 30 days in advance, will not insert duplicate boats
 while ($dateDate <= $maxDay){
     $dayOfWeek = $dateDate->format("l");
     $isSummer = testSummer($dateDate);
+    $isDaylightOff = testDaylightOff($dateDate);
     $normalBoats = "INSERT INTO 
         boatsDNW(departDate, departAnacortes, departDecatur)
         VALUES('".$dateString."', '10:00', '11:00'),
@@ -75,6 +95,10 @@ while ($dateDate <= $maxDay){
         VALUES('".$dateString."', '10:00', '11:00'),
         ('".$dateString."', '16:00', '17:00'),
         ('".$dateString."', '19:30', '20:30')";
+    $fridayBoatsWinter = "INSERT INTO 
+        boatsDNW(departDate, departAnacortes, departDecatur)
+        VALUES('".$dateString."', '10:00', '11:00'),
+        ('".$dateString."', '18:00', '19:00')";     
 
     switch($dayOfWeek){
         case 'Sunday':
@@ -94,7 +118,12 @@ while ($dateDate <= $maxDay){
             $conn->query($normalBoats);
             break;
         case 'Friday':
-            $conn->query($fridayBoats);
+            if ($isDaylightOff) {
+               $conn->query($fridayBoatsWinter);
+            }
+            else {
+               $conn->query($fridayBoats);
+            }
             break;
         case 'Saturday':
             $conn->query($normalBoats);
