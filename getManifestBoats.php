@@ -6,8 +6,6 @@
 //connect to sql server with global $conn
 require 'dbConnect.php';
 
-//$maxBoat = 55;
-
 date_default_timezone_set('America/Los_Angeles');
 
 $today = date("Y-m-d");
@@ -19,10 +17,6 @@ $maxDay = $date->format("Y-m-d");
 
 $qry = $conn->prepare("SELECT DISTINCT departDate FROM boatsDNW
       WHERE isCancelled = 0");
-//    WHERE departDate > ?
- //   AND departDate <= ?
- //   AND isCancelled = 0");
-//    AND (fromAnacortesCount < ? OR fromDecaturCount < ?)");
 
 $qry->execute(array($today, $maxDay));
 
