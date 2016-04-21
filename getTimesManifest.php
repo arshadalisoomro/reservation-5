@@ -6,22 +6,15 @@
 //connect to sql server with global $conn
 require 'dbConnect.php';
 
-date_default_timezone_set('America/Los_Angeles');
-
-
-$today = date("Y-m-d");
-$date = new DateTime($today);
-$date->modify('+1 day');
-$tomorrow = $date->format("Y-m-d");
-
 $manDate = $_POST['manifestDate'];
 
+//do we want her to be able to see cancelled boats?
 $qry = $conn->prepare("SELECT DISTINCT departAnacortes FROM boatsDNW
     WHERE departDate = ?
     AND isCancelled = 0
     ORDER BY departAnacortes ASC");
- qry->execute(array($manDate));
-}
+
+$qry->execute(array($manDate));
 
 $outTime = $qry->fetchAll();
 
@@ -35,6 +28,6 @@ $json = json_encode($timeArray);
 echo $json;
 
 //close connection
-//$conn = null;
+$conn = null;
 
 ?>
