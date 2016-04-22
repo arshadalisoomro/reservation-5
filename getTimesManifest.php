@@ -9,7 +9,7 @@ require 'dbConnect.php';
 $manDate = $_POST['manifestDate'];
 
 //do we want her to be able to see cancelled boats?
-$qry = $conn->prepare("SELECT DISTINCT departAnacortes FROM boatsDNW
+$qry = $conn->prepare("SELECT DISTINCT departAnacortes, departDecatur FROM boatsDNW
     WHERE departDate = ?
     AND isCancelled = 0
     ORDER BY departAnacortes ASC");
@@ -22,6 +22,7 @@ $timeArray = array();
 
 foreach($outTime as $row){
     $timeArray[] = $row['departAnacortes'];
+    $timeArray[] = $row['departDecatur'];
 }
 
 $json = json_encode($timeArray);

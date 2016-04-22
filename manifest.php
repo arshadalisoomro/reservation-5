@@ -2,7 +2,7 @@
 <?php
 
 //set url variables for redirect if no POST
-$reservations_url="http://www.flessner.org/-jonTest/reservations.html";
+$admin_url="http://www.flessner.org/-jonTest/admin_selections.html";
 
 //returns manifest
 
@@ -10,9 +10,10 @@ $reservations_url="http://www.flessner.org/-jonTest/reservations.html";
 if($_POST){
    require 'dbConnect.php';
    $manifestDate = $_POST['manifestDate'];
+   $manifestTime = $_POST['manifestTime'];
    }
   else{
-    header("Location: $reservations_url");
+    header("Location: $admin_url");
     die();
 }
 
@@ -28,11 +29,13 @@ $qry = $conn->prepare("SELECT homeownerName,
                               paypal,
                               cost
                               FROM reservationsDNW
-    WHERE dateToDecatur = ?
-    OR dateToAnacortes = ?");
+                       WHERE (dateToDecatur = ?
+                       OR dateToAnacortes = ?)
+                       AND (timeToDecatur = ?
+                       OR timeToAnacortes =?)");
 
 
-$qry->execute(array($manifestDate, $manifestDate));
+$qry->execute(array($manifestDate, $manifestDate, $manifestTime, $manifestTime));
 
 $outManifest = $qry->fetchAll();
 
@@ -60,17 +63,17 @@ $conn = null;
         <style>
         table {
             border-collapse: collapse;
-            width: 100%;            
+            width: 100%;
         }
         th {
             font-weight: normal;
-            text-align: left;          
+            text-align: left;
         }
         td {
             text-align: left;
-            border-bottom: 1px solid darkgray;          
+            border-bottom: 1px solid darkgray;
         }
-        </style>  
+        </style>
      </head>
      <body>
             <div>
@@ -78,7 +81,13 @@ $conn = null;
                 <?php
                   $dateOut=date_create("$manifestDate");
                   echo date_format($dateOut,"l m/d/Y ");
+                  echo " - ";
+                  $timeOut = new DateTime("$manifestTime");
+                  echo $timeOut->format('g:ia');
                 ?>
+            <a>Boat</a>
+            <br />
+            <br />
 
          <!--   <table class="table table-striped table-condensed"> -->
                 <table>
