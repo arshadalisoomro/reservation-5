@@ -186,7 +186,7 @@ else{
     <meta charset = "UTF-8">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="boatRes.css">
+    <link rel="stylesheet" type="text/css" href="css/boatRes.css">
     <!-- echo php info into js var -->
     <script><?php echo "var allInfo = " . $json . ";";?></script>
     <script src="confirmation.js"></script>    
@@ -213,6 +213,3 @@ else{
   
 </body>
 </html>
-
-
- 

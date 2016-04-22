@@ -56,7 +56,7 @@ $conn = null;
         <meta charset = "UTF-8"></meta>
             <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'></link>
-        <link rel="stylesheet" type="text/css" href="boatRes.css"></link>
+        <link rel="stylesheet" type="text/css" href="css/boatRes.css"></link>
         <style>
         table {
             border-collapse: collapse;
