@@ -16,14 +16,14 @@ if($_POST){
     $dataArray = $_SESSION['dataArray'];
     //get total number since will be needed
     $totalNumber = $dataArray['totalNumber'];
-    $cost = $dataArray['cost'];    
+    $cost = $dataArray['cost'];
 	$costDisplay = number_format($cost, 2);
     $confCode= $dataArray['confirmationCode'];
     $dataArray['paypal'] = "N";
-    
+
     //calculate cost with paypal fees included
     $paypalTot = $cost;
-    //add 30 cent flat fee and 2.9% 
+    //add 30 cent flat fee and 2.9%
 	//this math works since paypal will apply fees to this larger amount
 	//but all will be covered by the buyer
     $paypalTot = ($cost + .30) / .971;
@@ -67,7 +67,7 @@ if($_POST){
             $dataArray['dateToAnacortes'],
             $dataArray['timeToAnacortes']));
     }
-    
+
     //insert data into table
     $qry = $conn->prepare("INSERT INTO reservationsDNW(
         confirmationCode,
@@ -113,16 +113,14 @@ if($_POST){
             $tmp_time = strtotime($dataArray['timeToAnacortes']);
             $AnacortesTime = date('g:ia', $tmp_time);
         }
-        
+
         //code to send email using PHPMailer
-        
+
         require_once('PHPMailer/PHPMailerAutoload.php');
-                
+
         $success = "Your reservation to DNW has been successfully made.";
         $codeEmail = "Your confirmation code is: " .
             $dataArray['confirmationCode'];
-        //$onboatCost = "Trip cost (if not already paid by PayPal): $" .
-		//    $dataArray['cost'];
         $onboatCost = "Trip cost (if not already paid by PayPal): $" .
 		    $costDisplay;
         if(!$dataArray['dateToDecatur']){
@@ -146,12 +144,12 @@ if($_POST){
             " passengers on this reservation.";
         }
         $enjoy = "Enjoy your trip!";
-		//adding Kathy's message 
-		$query = $conn->query("SELECT RespondMsg FROM AppData WHERE ID = 1");	     
+		//adding Kathy's message
+		$query = $conn->query("SELECT RespondMsg FROM AppData WHERE ID = 1");
 		$result = $query->fetch(PDO::FETCH_ASSOC);
 		$addtlinfo = $result['RespondMsg'];
-        
-		        
+
+
         $mail = new PHPMailer(); // create a new object
         $mail->isSMTP();
         // debugging: 2 = errors and messages, 1 = messages only
@@ -162,20 +160,20 @@ if($_POST){
         $mail->Host = "webmail.flessner.org";
         // 587 or 465  (or 25 for mail from discount.asp)
         $mail->Port = 25;
-        $mail->IsHTML(true);        
+        $mail->IsHTML(true);
 		$mail->Username = "reservations@flessner.org";
         //keeping this out of github, replace only when publishing
-        $mail->Password = "****";       
+        $mail->Password = "****";
         $mail->SetFrom("reservations@flessner.org");
         $mail->Subject = "DNW Boat Reservation";
         $mail->Body = $success . "<br>" . $codeEmail . "<br>" . $itinerary .
-            "<br>". $travellers . "<br>".$onboatCost . "<br>". "<br>". $addtlinfo . "<br>" . 
+            "<br>". $travellers . "<br>".$onboatCost . "<br>". "<br>". $addtlinfo . "<br>" .
 			"<br>" . $enjoy;
         $mail->AddAddress($dataArray['email']);
         if(!$mail->Send()) {
            echo "Mailer Error: " . $mail->ErrorInfo;
         }
-       // else {	
+       // else {
        //       header("Location: $reservation_complete_url");
        // }
     }
@@ -204,13 +202,13 @@ else{
 
         <!--  PayPal BUTTON CODE -->
         <p>
-            <form action="https://www.paypal.com/cgi-bin/webscr" method="post"> 
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
             <!-- <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post"> -->
             <input type="hidden" name="cmd" value="_xclick">
             <input type="hidden" name="business" value="paulfle@comcast.net">
-            <!--  <input type="hidden" name="business" value="paulfle-facilitator@comcast.net"> -->
-            <input type="hidden" name="item_name" value="DNW Boat Reservation"> 
-            <input type="hidden" name="amount" value="<?= $paypalTotal ?>"> 
+            <!-- <input type="hidden" name="business" value="paulfle-facilitator@comcast.net"> -->
+            <input type="hidden" name="item_name" value="DNW Boat Reservation">
+            <input type="hidden" name="amount" value="<?= $paypalTotal ?>">
 			<input type="hidden" name="custom" value="<?=$confCode ?>">
             <input type="hidden" name="notify_url" value="http://flessner.org/-jonTest/ipn.php">
 			<!-- line below not needed because set in paypal account, was giving error here -->
@@ -220,9 +218,9 @@ else{
                    src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/pp-acceptance-small.png"
                    alt="Check out with PayPal">
             Pay now by PayPal or Credit Card: $ <?= $paypalTotal ?>  <i>(PayPal fee included) </i>
-            </form>  
+            </form>
 
-			
+
 
         </p>
         <br />
@@ -241,10 +239,9 @@ else{
                  <a style="padding-left:20px">
                      - Homeowner Charge (Option only for homeowners with accounts in good standing)
                  </a>
-				 
+
               </form>
         </p>
 
     </body>
 </html>
-
