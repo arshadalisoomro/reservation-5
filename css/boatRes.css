@@ -30,6 +30,9 @@ table, th, td {
 .noBorder {
     border-top: 0px hidden;
 }
+#link {
+  color:black;
+}
 #homeownerDiv, #guestDiv, #decaturTimeDiv, #anacortesTimeDiv {
   padding-left: 50px;
 }
