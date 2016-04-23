@@ -30,12 +30,12 @@ $qry = $conn->prepare("SELECT homeownerName,
                               cost
                               FROM reservationsDNW
                        WHERE (dateToDecatur = ?
-                       OR dateToAnacortes = ?)
-                       AND (timeToDecatur = ?
-                       OR timeToAnacortes =?)");
+                       AND timeToDecatur = ?)
+                       OR (dateToAnacortes = ?
+                       AND timeToAnacortes =?)");
 
 
-$qry->execute(array($manifestDate, $manifestDate, $manifestTime, $manifestTime));
+$qry->execute(array($manifestDate, $manifestTime, $manifestDate, $manifestTime));
 
 $outManifest = $qry->fetchAll();
 
