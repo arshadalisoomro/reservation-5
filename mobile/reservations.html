@@ -4,7 +4,7 @@
     <title>DNW Boat Reservation</title>
     <meta charset = "UTF-8" name="viewport" content="initial-scale=1, width=device-width, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="../css/jquery-ui.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/mobile/jquery.mobile-1.4.5.min.css">
     <link rel="stylesheet" type="text/css" href="../css/mobile/boatRes.css">
     <script src="../libraries/jquery-2.2.3.min.js"></script>
     <script src="../libraries/jquery-ui.min.js"></script>
@@ -19,10 +19,10 @@
 
         $(function () {
             //add any necessary boats
-            $.post("addBoats.php").done(function(){
+            $.post("../addBoats.php").done(function(){
                 //init datepickers once boats added
                 var boatDates = []; //will hold json data
-                $.getJSON("getBoats.php", function(jsonDates){
+                $.getJSON("../getBoats.php", function(jsonDates){
                     for(i=0; i < jsonDates.length; i++){
                         boatDates.push(jsonDates[i]);
                     }
@@ -208,7 +208,7 @@
                 var departAnaDate = $('#toDecaturDate').val();
                 var departAnaTime = $('#decaturTime').val();
                 //ajax function to callback to return current passenger count on boat
-                $.getJSON('checkFull.php',
+                $.getJSON('../checkFull.php',
                     {date: departAnaDate, time: departAnaTime, depart: 'a'},
                     function(jsonCount){
                         var space = jsonCount['fromAnacortesCount'];
@@ -221,7 +221,7 @@
                 var departDecDate = $('#toAnacortesDate').val();
                 var departDecTime = $('#anacortesTime').val();
                 //ajax function to callback to return current passenger count on boat
-                $.getJSON('checkFull.php',
+                $.getJSON('../checkFull.php',
                     {date: departDecDate, time: departDecTime, depart: 'd'},
                     function(jsonCount){
                         var space = jsonCount['fromDecaturCount'];
@@ -470,7 +470,7 @@
 </head>
 <body>
     <div id="outerDiv">
-        <form id="boatResForm" action="confirmation.php" method="post"
+        <form id="boatResForm" action="../confirmation.php" method="post"
             onsubmit="return whenSubmit()" novalidate>
         <div data-role="header">
             <legend><b>New Boat Reservation</b></legend>
@@ -660,7 +660,7 @@
                         $('#toDecaturDate').val(formatDate);
                         var sendDate = $('#boatResForm').serialize();
                         var toDecTimes = [];
-                        $.post("getTimesDecatur.php",
+                        $.post("../getTimesDecatur.php",
                         sendDate,
                         function(jsonTimes){
                             console.log(jsonTimes);
@@ -745,7 +745,7 @@
                         $('#toAnacortesDate').val(formatDate);
                         var sendDate = $('#boatResForm').serialize();
                         var toAnaTimes = [];
-                        $.post("getTimesAnacortes.php",
+                        $.post("../getTimesAnacortes.php",
                         sendDate,
                         function(jsonTimes){
                             console.log(jsonTimes);
