@@ -2,7 +2,7 @@
 <?php
 
 //set url variables for redirect if no POST
-$admin_url="http://www.flessner.org/-jonTest/admin_selections.html";
+$admin_url="http://www.flessner.org/-jonTest/manifest.html";
 
 //returns manifest
 
