@@ -6,11 +6,11 @@
 //select how they would like to pay after calculating the cost
 
 //set url variables for redirect if no POST
-$reservations_url="http://www.flessner.org/-jonTest/reservations.html";
+$reservations_url="http://www.flessner.org/-jonTest/mobile/reservations.html";
 //if post exists
 if($_POST){
     //connect to sql server with global $conn
-    require 'dbConnect.php';
+    require '../dbConnect.php';
     //timezone is always west coast
     date_default_timezone_set('America/Los_Angeles');
 
@@ -184,32 +184,38 @@ else{
 <head>
     <title>Confirm Details</title>
     <meta charset = "UTF-8">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="css/boatRes.css">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="../css/mobile/boatRes.css">
+    <link rel="stylesheet" type="text/css" href="../css/mobile/jquery.mobile-1.4.5.min.css">
     <!-- echo php info into js var -->
     <script><?php echo "var allInfo = " . $json . ";";?></script>
+    <script src="../libraries/jquery-2.2.3.min.js"></script>
+    <script src="../libraries/jquery.mobile-1.4.5.min.js"></script>
     <script src="confirmation.js"></script>    
 </head>
 <body>
-    <div id="homeowner"></div>
-    <div id="guest"></div>
-    <div id="email"></div>
-    <div id="phone"></div>
-    <div id="travellers"></div>
-    <div id="trip"></div>
-	<div id="comments"></div>
-    <p><button onclick="window.location.replace('reservations.html')">
-        Go Back
-    </button></p>
-	<br />   
-
-		   	 
+<div data-role="header">
+  <h6 style="white-space: normal">Confirmation</h6>
+</div>
+<div role="main">
+    <div class="ui-body ui-body-a ui-corner-all"><p>
+        <div id="homeowner"></div>
+        <div id="guest"></div>
+        <div id="email"></div>
+        <div id="phone"></div>
+        <div id="travellers"></div>
+        <div id="trip"></div>
+    	<div id="comments"></div>
+    </p></div>
     <p>	
-	<form id="confirm" action="paymentOptions.php" method="post"> 
+	<form id="confirm" action="../paymentOptions.php" method="post"> 
 	<input type="submit" name="submit" value="Confirm and Display Payment Options"> 	   
 	</form>
     </p>
-  
+</div>
+
+<div data-role="footer">
+    <button onclick="window.location.replace('reservations.html')" data-icon="arrow-l">Go Back</button>
+</div>
 </body>
 </html>

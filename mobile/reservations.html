@@ -475,8 +475,8 @@
         <h6 style="white-space: normal">New Boat Reservation</h6>
     </div>
     <div class="ui-content" role="main">
-        <form id="boatResForm" action="../confirmation.php" method="post"
-            onsubmit="return whenSubmit()" novalidate>
+        <form id="boatResForm" action="confirmation.php" method="post"
+            data-ajax="false" onsubmit="return whenSubmit()" novalidate>
         <label for="checkGuest">Please check if you are a guest.</label>
         <input type="checkbox" name="checkGuest" id="checkGuest">
 
