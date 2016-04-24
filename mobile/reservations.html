@@ -3,7 +3,7 @@
 <head>
     <title>DNW Boat Reservation</title>
     <meta charset = "UTF-8" name="viewport" content="initial-scale=1, width=device-width, user-scalable=no">
-    <link rel="stylesheet" type="text/css" href="../css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/mobile/jquery-ui.min.css">
     <link rel="stylesheet" type="text/css" href="../css/mobile/jquery.mobile-1.4.5.min.css">
     <link rel="stylesheet" type="text/css" href="../css/mobile/boatRes.css">
     <script src="../libraries/jquery-2.2.3.min.js"></script>
@@ -470,41 +470,39 @@
 </head>
 <body>
     <div id="outerDiv">
+    <div data-role="header">
+        <a href="/" data-icon="home"><div style="visibility: hidden">|</div></a>
+        <h6 style="white-space: normal">New Boat Reservation</h6>
+    </div>
+    <div class="ui-content" role="main">
         <form id="boatResForm" action="../confirmation.php" method="post"
             onsubmit="return whenSubmit()" novalidate>
-        <div data-role="header">
-            <legend><b>New Boat Reservation</b></legend>
-        </div>
-    <div class="ui-content" role="main">
-        <p><input type="checkbox" name="checkGuest" id="checkGuest">
-            Please check if you are a guest.
-        </p>
+        <label for="checkGuest">Please check if you are a guest.</label>
+        <input type="checkbox" name="checkGuest" id="checkGuest">
 
-        <p><label for="homeowner">Homeowner Name:</label></p>
-        <p>
-            <input id="homeowner" name="homeowner" type="text"
-                maxlength="100" pattern="[\d\w\s\-\.]+">
-        </p>
+        <label for="homeowner">Homeowner Name:</label>
+        <input id="homeowner" name="homeowner" type="text"
+            maxlength="100" pattern="[\d\w\s\-\.]+">
         <div id="homeownerReq">Enter the homeowner name.</div>
         
         <div id="guestCheckDiv">
-            <p><label for="guest">Guest Name:</label></p>
-            <p>
-                <input id="guest" name="guest" type="text"
-                    maxlength="100" pattern="[\d\w\s\-\.]+">
-            </p>
+            <label for="guest">Guest Name:</label>
+            <input id="guest" name="guest" type="text"
+                maxlength="100" pattern="[\d\w\s\-\.]+">
             <div id="guestReq">Enter the guest name.</div>
-            <p><input id="guestAccept" name="guestAccept" type="checkbox">
-                <b>I accept and understand the
-                <a style=color:blue; Target="_blank"
-                    href="../guestinformation2.htm">
-                    DNW Guest Guidelines
-                </a></b>
+
+            <p>
+            <a style=color:blue; Target="_blank" href="../../guestinformation2.htm">DNW Guest Guidelines</a>
+            <fieldset data-role="controlgroup">
+                <label for="guestAccept">I understand and accept the DNW Guest Guidelines</label>
+                <input id="guestAccept" name="guestAccept" type="checkbox">
+            </fieldset>
             </p>
             <p id="requireGuestAccept">
                 You must read, understand, and accept the DNW Guest Guidelines.
             </p>
         </div>
+
         <p><label for="email">Email:</label></p>
         <p><input id="email" name="email" type="email" maxlength="255"></p>
         <div id="emailReq">
@@ -518,7 +516,7 @@
         </div>
 
         <div id="travellerDiv" data-role="collapsible">
-            <p>Number of Passengers - </p>
+            <h5>Number of Passengers - </h5>
                 <div id="homeownerDiv">
                 <p><label for="numAdultHomeowner">Adult homeowners:</label></p>
                 <p>
@@ -623,25 +621,21 @@
         </div>
 
         <p>Please select trip type:</p>
-            <p><input type="radio" name="tripType" id="roundtrip"
-                    value="roundtrip">
-                Round trip
-            </p>
-            <p><input type="radio" name="tripType" id="oneWayDecatur"
-                    value="oneWayDecatur">
-                One way to Decatur
-            </p>
-            <p><input type="radio" name="tripType" id="oneWayAnacortes"
-                    value="oneWayAnacortes">
-                One way to Anacortes
-            </p>
+        <fieldset data-role="controlgroup">
+            <input type="radio" name="tripType" id="roundtrip" value="roundtrip">
+                <label for="roundtrip">Round trip</label>
+            <input type="radio" name="tripType" id="oneWayDecatur" value="oneWayDecatur">
+                <label for="oneWayDecatur">One way to Decatur</label>
+            <input type="radio" name="tripType" id="oneWayAnacortes" value="oneWayAnacortes">
+                <label for="oneWayAnacortes">One way to Anacortes</label>
             <div id="tripTypeReq">Select a trip type.</div>
+        </fieldset>
         <div id="toDecaturDiv">
             <p>
                 <label for="toDecaturDate">Date of Departure to Decatur:
                 </label>
             </p>
-            <p><input id="toDecaturDate" name="toDecaturDate" type="text"></p>
+            <p><input id="toDecaturDate" name="toDecaturDate" type="text" readonly="true"></p>
             <div id="decaturDateReq">Select a departure date to Decatur.</div>
         </div>
         <div id="decaturTimeDiv">
@@ -719,12 +713,8 @@
         <div id="decBoatCountError"></div>
 
         <div id="toAnacortesDiv">
-            <p><label for="toAnacortesDate">
-                Date of Departure to Anacortes:
-            </label></p>
-            <p>
-                <input id="toAnacortesDate" name="toAnacortesDate" type="text">
-            </p>
+            <p><label for="toAnacortesDate">Date of Departure to Anacortes:</label></p>
+            <p><input id="toAnacortesDate" name="toAnacortesDate" type="text" readonly="true"></p>
             <div id="anacortesDateReq">
                 Select a departure date to Anacortes.
             </div>
