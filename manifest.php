@@ -61,6 +61,11 @@ $conn = null;
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'></link>
         <link rel="stylesheet" type="text/css" href="css/boatRes.css"></link>
         <style>
+        body {
+          font-family: 'Open Sans', sans-serif;
+          background-color:#F5FFFA; /*mint green */
+          padding-left: 0%;
+        }
         table {
             border-collapse: collapse;
             width: 100%;
@@ -79,6 +84,7 @@ $conn = null;
             <div>
             <a>Manifest for:</a>
                 <?php
+                  $totalPass = 0;
                   $dateOut=date_create("$manifestDate");
                   echo date_format($dateOut,"l m/d/Y ");
                   echo " - ";
@@ -101,7 +107,7 @@ $conn = null;
                             <th>Child</th>
                             <th>Paypal</th>
                             <th>Cost</th>
-                            <th>Admin</th>
+                            <th>Initials</th>
                         </tr>
                         <tr class="noBorder">
                           <th>Name</th>
@@ -119,6 +125,11 @@ $conn = null;
                 foreach($outManifest as $row) {
                     $manifestArray[] = $row['homeownerName'];
 
+                $totalPass = $totalPass + $row['numAdultHomeowners']
+                                        + $row['numChildHomeowners']
+                                        + $row['numAdultGuests']
+                                        + $row['numChildGuests'];
+
                 echo'<tbody>';
                 echo'<tr>';
                 echo'<td>'. $row['homeownerName']."</td>";
@@ -130,12 +141,16 @@ $conn = null;
                 echo'<td>'. $row['paypal'].'</td>';
                 echo'<td>'. number_format($row['cost'], 2).'</td>';
                 echo'<td>'.'</td>';
-                echo'<tr>';
+                echo'</tr>';
                 echo'</tbody>';
               }
             ?>
-
                 </table>
+                <br />            
+                <a>Total Passengers:</a>
+                    <?php
+                      echo "$totalPass";
+                    ?>
         </div>
     </body>
 </html>
