@@ -5,7 +5,7 @@
 
 //redirect if not post - user arrived by entering url
 //set url variables for redirects
-$reservations_url = "http://www.flessner.org/-jonTest/reservations.html";
+$reservations_url = "https://www.flessner.org/-jonTest/reservations.html";
 
 if($_POST){
     //connect to sql server with global $conn
@@ -17,7 +17,7 @@ if($_POST){
     //get total number since will be needed
     $totalNumber = $dataArray['totalNumber'];
     $cost = $dataArray['cost'];
-	$costDisplay = number_format($cost, 2);
+  	$costDisplay = number_format($cost, 2);
     $confCode= $dataArray['confirmationCode'];
     $dataArray['paypal'] = "N";
 
@@ -144,31 +144,32 @@ if($_POST){
             " passengers on this reservation.";
         }
         $enjoy = "Enjoy your trip!";
-		//adding Kathy's message
-		$query = $conn->query("SELECT RespondMsg FROM AppData WHERE ID = 1");
-		$result = $query->fetch(PDO::FETCH_ASSOC);
-		$addtlinfo = $result['RespondMsg'];
+	    	//adding Kathy's message
+    		$query = $conn->query("SELECT RespondMsg FROM AppData WHERE ID = 1");
+	    	$result = $query->fetch(PDO::FETCH_ASSOC);
+	    	$addtlinfo = $result['RespondMsg'];
 
 
         $mail = new PHPMailer(); // create a new object
-        $mail->isSMTP();
+        //  $mail->isSMTP();
         // debugging: 2 = errors and messages, 1 = messages only
-        $mail->SMTPDebug = 0;
-        $mail->SMTPAuth = true;
+        $mail->SMTPDebug = 2;
+        //  $mail->SMTPAuth = true;
         // secure transfer enabled REQUIRED for GMail use ssl or tls
-        //$mail->SMTPSecure = 'tls';
-        $mail->Host = "webmail.flessner.org";
+        //  $mail->SMTPSecure = 'tls';
+        //$mail->Host = "webmail.flessner.org";
+        //  $mail->Host = "https://sm01.internetmailserver.net";
         // 587 or 465  (or 25 for mail from discount.asp)
-        $mail->Port = 25;
+        //   $mail->Port = 25;
         $mail->IsHTML(true);
-		$mail->Username = "reservations@flessner.org";
+	    	//  $mail->Username = "reservations@flessner.org";
         //keeping this out of github, replace only when publishing
-        $mail->Password = "****";
+        //  $mail->Password = "*****";
         $mail->SetFrom("reservations@flessner.org");
         $mail->Subject = "DNW Boat Reservation";
         $mail->Body = $success . "<br>" . $codeEmail . "<br>" . $itinerary .
             "<br>". $travellers . "<br>".$onboatCost . "<br>". "<br>". $addtlinfo . "<br>" .
-			"<br>" . $enjoy;
+		  	"<br>" . $enjoy;
         $mail->AddAddress($dataArray['email']);
         if(!$mail->Send()) {
            echo "Mailer Error: " . $mail->ErrorInfo;
@@ -202,18 +203,18 @@ else{
 
         <!--  PayPal BUTTON CODE -->
         <p>
-            <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-            <!-- <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post"> -->
+           <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+            <!--<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post"> -->
             <input type="hidden" name="cmd" value="_xclick">
+            <!-- <input type="hidden" name="business" value="paulfle@comcast.net"> -->
             <input type="hidden" name="business" value="paulfle@comcast.net">
-            <!-- <input type="hidden" name="business" value="paulfle-facilitator@comcast.net"> -->
             <input type="hidden" name="item_name" value="DNW Boat Reservation">
             <input type="hidden" name="amount" value="<?= $paypalTotal ?>">
-			<input type="hidden" name="custom" value="<?=$confCode ?>">
-            <input type="hidden" name="notify_url" value="http://flessner.org/-jonTest/ipn.php">
+		      	<input type="hidden" name="custom" value="<?=$confCode ?>">
+            <input type="hidden" name="notify_url" value="https://flessner.org/-jonTest/ipn.php">
 			<!-- line below not needed because set in paypal account, was giving error here -->
             <!-- <input type="hidden" name="return" value="http://flessner.org/-jonTest/resComplete.html"> -->
-            <input type="hidden" name="cancel_return" value="http://flessner.org/-jonTest/resComplete.html">
+            <input type="hidden" name="cancel_return" value="https://flessner.org/-jonTest/resComplete.html">
             <input type="image" name="submit" border="1" style="margin:0px 15px"
                    src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/pp-acceptance-small.png"
                    alt="Check out with PayPal">
