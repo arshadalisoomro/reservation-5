@@ -10,7 +10,7 @@ $reservations_url="https://www.flessner.org/-jonTest/admin_form.html";
 require 'dbConnect.php';
 
 $qry = $conn->prepare("SELECT * FROM reservationsDNW
-where (dateToDecatur > CURRENT_TIMESTAMP) or (dateToAnacortes > CURRENT_TIMESTAMP)");
+where (dateToDecatur >= CURRENT_TIMESTAMP) or (dateToAnacortes >= CURRENT_TIMESTAMP)");
 
 $qry->execute();
 
