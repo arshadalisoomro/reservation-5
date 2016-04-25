@@ -6,7 +6,7 @@
 //select how they would like to pay after calculating the cost
 
 //set url variables for redirect if no POST
-$reservations_url="http://www.flessner.org/-jonTest/reservations.html";
+$reservations_url="https://www.flessner.org/-jonTest/reservations.html";
 //if post exists
 if($_POST){
     //connect to sql server with global $conn
@@ -27,7 +27,7 @@ if($_POST){
     $toAnacortesDate = $_POST['toAnacortesDate'];
     $toDecaturTime = $_POST['decaturTime'];
     $toAnacortesTime = $_POST['anacortesTime'];
-    $comment = $_POST['comment'];	
+    $comment = $_POST['comment'];
     //set binary guest variable
     if($_POST['checkGuest']){
         $isGuest = 1;
@@ -36,7 +36,7 @@ if($_POST){
         $isGuest = 0;
     }
     //calculate total number travelers
-	 
+
     $totalNumber = $numAdultHomeowner +
                    $numChildHomeowner +
                    $numAdultGuest +
@@ -51,7 +51,7 @@ if($_POST){
                ($numAdultGuest*17.5) +
                ($numChildGuest*10);
     }
-	else{  
+	else{
        $cost = ($numAdultHomeowner*15) +
                ($numChildHomeowner*10) +
                ($numAdultGuest*35) +
@@ -62,7 +62,7 @@ if($_POST){
 	// change it in dataArray below for in place of $cost
     $Tcost = .1;
 
-          
+
     //decatur date
     if(!$toDecaturDate){
         $toDecaturDate = '';
@@ -154,14 +154,14 @@ if($_POST){
         "timeToAnacortes" => $toAnacortesTime,
         "comments" => $comment,
         "paypal" => 'N',
-        "cost" => $cost,		
+        "cost" => $cost,
         "printDecDate" => $printDecDate,
         "printAnaDate" => $printAnaDate,
         "printDecTime" => $printDecTime,
-        "printAnaTime" => $printAnaTime,        
+        "printAnaTime" => $printAnaTime,
         "timestamp" => $timestamp,
     );
-    
+
     //set php session var
     $_SESSION['dataArray'] = $allData;
 
@@ -189,7 +189,7 @@ else{
     <link rel="stylesheet" type="text/css" href="css/boatRes.css">
     <!-- echo php info into js var -->
     <script><?php echo "var allInfo = " . $json . ";";?></script>
-    <script src="confirmation.js"></script>    
+    <script src="confirmation.js"></script>
 </head>
 <body>
     <div id="homeowner"></div>
@@ -202,14 +202,14 @@ else{
     <p><button onclick="window.location.replace('reservations.html')">
         Go Back
     </button></p>
-	<br />   
+	<br />
 
-		   	 
-    <p>	
-	<form id="confirm" action="paymentOptions.php" method="post"> 
-	<input type="submit" name="submit" value="Confirm and Display Payment Options"> 	   
+
+    <p>
+	<form id="confirm" action="paymentOptions.php" method="post">
+	<input type="submit" name="submit" value="Confirm and Display Payment Options">
 	</form>
     </p>
-  
+
 </body>
 </html>
