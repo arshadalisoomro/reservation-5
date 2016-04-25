@@ -70,100 +70,84 @@ curl_setopt($ch, CURLOPT_CAINFO, $cert);
 
 $res = curl_exec($ch);
 
-if (curl_errno($ch) != 0) {        
-    if(DEBUG == true) {	        
-		error_log(date('[Y-m-d H:i e] '). "Can't connect to PayPal to validate IPN message: " . curl_error($ch) . PHP_EOL, 3, LOG_FILE);	    
-    }  
-	curl_close($ch);    
+if (curl_errno($ch) != 0) {
+    if(DEBUG == true) {
+		error_log(date('[Y-m-d H:i e] '). "Can't connect to PayPal to validate IPN message: " . curl_error($ch) . PHP_EOL, 3, LOG_FILE);
+    }
+	curl_close($ch);
 	exit;
-} 
-else {     
+}
+else {
 	// Log the entire HTTP response if debug is switched on.
-	if(DEBUG == true) {             
+	if(DEBUG == true) {
         error_log(date('[Y-m-d H:i e] '). "HTTP request of validation request: ". curl_getinfo($ch, CURLINFO_HEADER_OUT) ." for IPN payload: $req" . PHP_EOL, 3, LOG_FILE);
-	    error_log(date('[Y-m-d H:i e] '). "HTTP response of validation request: $res" . PHP_EOL, 3, LOG_FILE);        
-	}	
+	    error_log(date('[Y-m-d H:i e] '). "HTTP response of validation request: $res" . PHP_EOL, 3, LOG_FILE);
+	}
 }
 
 // Inspect IPN validation result and act accordingly
 // Split response headers and payload, a better way for strcmp
 $tokens = explode("\r\n\r\n", trim($res));
-$res = trim(end($tokens)); 
-        
-if (strcmp ($res, "VERIFIED") == 0) {  
+$res = trim(end($tokens));
+
+if (strcmp ($res, "VERIFIED") == 0) {
    $payment_status = $_POST['payment_status'];
    $receiver_email = $_POST['receiver_email'];
    $payment_amount = $_POST['mc_gross'];
-   $conf_code = $_POST['custom'];   
+   $conf_code = $_POST['custom'];
    // check that receiver email is correct
-   if ($receiver_email = 'paulfle@comcast.net') {    
+   //if ($receiver_email = 'paulfle@comcast.net') {
+   if ($receiver_email = 'paulfle@comcast.net') {
       // and check that payment status is complete
-      if ($payment_status = 'Completed') {    
+      if ($payment_status = 'Completed') {
           // update database
           $sql = $conn->prepare("UPDATE reservationsDNW SET paypal = 'Y' WHERE confirmationCode = '$conf_code'");
           $sql->execute();
           $sql = $conn->prepare("UPDATE reservationsDNW SET cost = $payment_amount WHERE confirmationCode = '$conf_code'");
           $sql->execute();
-          $conn = null;    
+          $conn = null;
           curl_close($ch);
-      }   
+      }
       // if status not complete, check if status is pending
       else {
-           if ($payment_status = "Pending") {   
+           if ($payment_status = "Pending") {
                // update database
                $sql = $conn->prepare("UPDATE reservationsDNW SET paypal = 'P' WHERE confirmationCode = '$conf_code'");
                $sql->execute();
                $sql = $conn->prepare("UPDATE reservationsDNW SET cost = $payment_amount WHERE confirmationCode = '$conf_code'");
                $sql->execute();
-               $conn = null;  
+               $conn = null;
                curl_close($ch);
-           }    
+           }
            else {
-               if(DEBUG == true) {	      
-	  	       error_log(date('[Y-m-d H:i e] '). "Payment status not Completed or Pending: " . PHP_EOL, 3, LOG_FILE);   
+               if(DEBUG == true) {
+	  	       error_log(date('[Y-m-d H:i e] '). "Payment status not Completed or Pending: " . PHP_EOL, 3, LOG_FILE);
                curl_close($ch);
                }
-           }  
-      }     
-   }  
+           }
+      }
+   }
    else {
-        if(DEBUG == true) {	        
-	    	error_log(date('[Y-m-d H:i e] '). "Receiver email invalid: "  . PHP_EOL, 3, LOG_FILE);  
+        if(DEBUG == true) {
+	    	error_log(date('[Y-m-d H:i e] '). "Receiver email invalid: "  . PHP_EOL, 3, LOG_FILE);
             curl_close($ch);
         }
-   }     
+   }
 }
-else{ 
-   if (strcmp ($res, "INVALID") == 0) {   
-        if(DEBUG == true) {	       
-	    	error_log(date('[Y-m-d H:i e] '). "Returned INVALID message: " . PHP_EOL, 3, LOG_FILE);  
+else{
+   if (strcmp ($res, "INVALID") == 0) {
+        if(DEBUG == true) {
+	    	error_log(date('[Y-m-d H:i e] '). "Returned INVALID message: " . PHP_EOL, 3, LOG_FILE);
             curl_close($ch);
-        }            
+        }
    }
    else {
-         if(DEBUG == true) {	       
-	    	error_log(date('[Y-m-d H:i e] '). "Res returned not Valid or Invalid: " . PHP_EOL, 3, LOG_FILE);   
+         if(DEBUG == true) {
+	    	error_log(date('[Y-m-d H:i e] '). "Res returned not Valid or Invalid: " . PHP_EOL, 3, LOG_FILE);
             curl_close($ch);
-        }    
+        }
    }
 }
-
- 
-    // check whether the payment_status is Completed
-    // check that txn_id has not been previously processed
-    // check that receiver_email is your PayPal email
-    // check that payment_amount/payment_currency are correct
-    // process payment and mark item as paid.
-    // assign posted variables to local variables
-    //$item_name = $_POST['item_name'];
-    //$item_number = $_POST['item_number'];
-    //$payment_status = $_POST['payment_status'];
-    //$payment_amount = $_POST['mc_gross'];
-    //$payment_currency = $_POST['mc_currency'];
-    //$txn_id = $_POST['txn_id'];
-    //$receiver_email = $_POST['receiver_email'];
-    //$payer_email = $_POST['payer_email'];
 
 
 ?>
-
