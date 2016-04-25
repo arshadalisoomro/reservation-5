@@ -41,12 +41,6 @@ $outManifest = $qry->fetchAll();
 
 $manifestArray = array();
 
-//echo "<table border='1' style='border-collapse:
-//    collapse;border-color: silver;'>";
-//    echo "<tr style='font-weight: bold;'>";
-//    echo "<td width='150' align='center'>Class</td>";
-//    echo "</tr>";
-
 
 //close connection
 $conn = null;
@@ -61,28 +55,16 @@ $conn = null;
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'></link>
         <link rel="stylesheet" type="text/css" href="css/boatRes.css"></link>
         <style>
-        body {
-          font-family: 'Open Sans', sans-serif;
-          background-color:#F5FFFA; /*mint green */
-          padding-left: 0%;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th {
-            font-weight: normal;
-            text-align: left;
-        }
+
         td {
             text-align: left;
             border-bottom: 1px solid darkgray;
         }
         </style>
      </head>
-     <body>
+     <body class=bodyManifest>
             <div>
-            <a>Manifest for:</a>
+            <a>Passenger Manifest for:</a>
                 <?php
                   $totalPass = 0;
                   $dateOut=date_create("$manifestDate");
@@ -94,10 +76,12 @@ $conn = null;
             <a>Boat</a>
             <br />
             <br />
-
+            <a>Adult Homeowner $15, Child Homeowner $10, Adult Guest $35, Child Guest $20</a>
+            <br />
+            <br />
          <!--   <table class="table table-striped table-condensed"> -->
-                <table>
-                    <thead>
+                <table class = tableAdmin>
+                    <thead class=thManifest>
                         <tr>
                             <th>Homeowner</th>
                             <th>Guest</th>
@@ -108,6 +92,7 @@ $conn = null;
                             <th>Paid</th>
                             <th>Cost</th>
                             <th>Initials</th>
+                            <th>Check $</th>
                         </tr>
                         <tr class="noBorder">
                           <th>Name</th>
@@ -116,9 +101,10 @@ $conn = null;
                           <th>HmOwn</th>
                           <th>Guests</th>
                           <th>Guests</th>
-						  <th></th>
-				   	      <th></th>
-						  <th></th>
+					            	  <th></th>
+				   	              <th></th>
+						              <th></th>
+                          <th></th>
                         </tr>
                     </thead>
                 <?php
@@ -132,15 +118,16 @@ $conn = null;
 
                 echo'<tbody>';
                 echo'<tr>';
-                echo'<td>'. $row['homeownerName']."</td>";
-                echo'<td>'. $row['guestName'].'</td>';
-                echo'<td>'. $row['numAdultHomeowners'].'</td>';
-                echo'<td>'. $row['numChildHomeowners'].'</td>';
-                echo'<td>'. $row['numAdultGuests'].'</td>';
-                echo'<td>'. $row['numChildGuests'].'</td>';
-                echo'<td>'. $row['paypal'].'</td>';
-                echo'<td>'. number_format($row['cost'], 2).'</td>';
-                echo'<td>'.'</td>';
+                echo'<td class=tdManifest>'. $row['homeownerName']."</td>";
+                echo'<td class=tdManifest>'. $row['guestName'].'</td>';
+                echo'<td class=tdManifest>'. $row['numAdultHomeowners'].'</td>';
+                echo'<td class=tdManifest>'. $row['numChildHomeowners'].'</td>';
+                echo'<td class=tdManifest>'. $row['numAdultGuests'].'</td>';
+                echo'<td class=tdManifest>'. $row['numChildGuests'].'</td>';
+                echo'<td class=tdManifest>'. $row['paypal'].'</td>';
+                echo'<td class=tdManifest>'. number_format($row['cost'], 2).'</td>';
+                echo'<td class=tdManifest>'.'</td>';
+                echo'<td class=tdManifest>'.'</td>';
                 echo'</tr>';
                 echo'</tbody>';
               }
