@@ -105,7 +105,7 @@ $conn = null;
                             <th>Child</th>
                             <th>Adult</th>
                             <th>Child</th>
-                            <th>Paypal</th>
+                            <th>Paid</th>
                             <th>Cost</th>
                             <th>Initials</th>
                         </tr>
@@ -146,7 +146,7 @@ $conn = null;
               }
             ?>
                 </table>
-                <br />            
+                <br />
                 <a>Total Passengers:</a>
                     <?php
                       echo "$totalPass";
