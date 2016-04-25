@@ -24,8 +24,27 @@ body {
 
   padding-left: 10%;
 }
+.bodyAdmin {
+  font-family: 'Open Sans', sans-serif;
+  background-color:#F5FFFA; /*mint green */
+  padding-left: 0%;
+}
 table, th, td {
    border: 1px solid black;
+}
+.tableAdmin {
+  border-collapse: collapse;
+  width: 100%;
+}
+.thAdmin {
+  font-weight: normal;
+  text-align: left;
+  font-size: small;
+}
+.tdAdmin {
+  text-align: left;
+  border-bottom: 1px solid darkgray;
+  font-size: small;
 }
 .noBorder {
     border-top: 0px hidden;
