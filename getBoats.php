@@ -11,7 +11,7 @@ $maxBoat = 55;
 date_default_timezone_set('America/Los_Angeles');
 
 $today = date("Y-m-d");
-
+ 
 $date = new DateTime($today);
 $date->modify('+30 day');
 
