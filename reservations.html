@@ -67,7 +67,7 @@
                     });
                 });
             });
-            
+
             //ensure guest and radios unchecked on back to page
             $('#checkGuest').prop('checked', false);
             $('#roundtrip').prop('checked', false);
@@ -104,7 +104,7 @@
                 else{
                     $("#guestCheckDiv").hide();
                     $('#guest').val(''); //clear guest name on unselecting guest
-                } 
+                }
             });
 
             //phone formatting - will auto insert () and - so phone number is (xxx)-xxx-xxxx
@@ -113,7 +113,7 @@
                 var curLen = $('#phone').val().length;
                 //cases for adding - user has just typed a char
                 if (prevLen < curLen){
-                    var lastChar = $('#phone').val().slice(-1); //get most recent added char 
+                    var lastChar = $('#phone').val().slice(-1); //get most recent added char
                     var isNum = /^[0-9]+$/.test(lastChar);
                     if(!isNum){
                         var delBad = $('#phone').val().slice(0,-1); //delete last char
@@ -185,7 +185,7 @@
                         $('#toDecaturDiv').hide();
                         $('#toAnacortesDiv').show();
                         break;
-                }   
+                }
             });
 
             //remove error msgs on changing values
@@ -199,7 +199,7 @@
                 $('#anacortesTimeReq').hide();
                 $('#anaBoatCountError').hide();
             });
-            
+
             //run ajax here to get passenger counts
             $('#decaturTime').on('change', function(){
                 $('#decaturTimeReq').hide();
@@ -259,7 +259,7 @@
                     $('#guestAccept').focus();
                     return false;
                 }
-                else{ 
+                else{
                     $('#guestReq').hide();
                     $('#requireGuestAccept').hide();
                 }
@@ -464,7 +464,7 @@
             //cast as int, since was returning as string
             return parseInt(passengerCount, 10);
         }
-        
+
     </script>
 </head>
 <body>
@@ -482,7 +482,7 @@
                 maxlength="100" pattern="[\d\w\s\-\.]+">
         </p>
         <div id="homeownerReq">Enter the homeowner name.</div>
-        
+
         <div id="guestCheckDiv">
             <p><label for="guest">Guest Name:</label></p>
             <p>
@@ -561,7 +561,7 @@
                         <option value="13">13</option>
                         <option value="14">14</option>
                         <option value="15">15</option>
-                    </select> 
+                    </select>
                      ($10 round trip)
                 </p>
                 </div>
@@ -798,14 +798,14 @@
             <div id="anacortesTimeReq">Select a boat time to Anacortes.</div>
         </div>
         <div id="anaBoatCountError"></div>
-        
+
         <!-- don't remove the space between the >< in "boatResForm"></textarea> because it messes up the cursor position in the comment box -->
         <p>Comments:</p>
         <p>
             <textarea rows="6" cols="60" id="comment" name="comment"
                 form="boatResForm"></textarea>
         </p>
-        
+
         <div id="submitDiv">
             <input id="submitButton" type="submit" value="Submit Reservation">
             <span id="subMsg"></span>
