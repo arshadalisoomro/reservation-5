@@ -1,4 +1,4 @@
-<?php require 'login_check.php'; ?>
+<?php require 'check_login.php'; ?>
 
 <!DOCTYPE HTML>
 <html>
