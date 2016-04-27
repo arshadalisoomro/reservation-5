@@ -10,9 +10,18 @@ $reservations_url="https://www.flessner.org/-jonTest/admin_tools/admin_form.php"
 //connect to sql server with global $conn
 require '../dbConnect.php';
 
-$qry = $conn->prepare("SELECT * FROM reservationsDNW
-where (dateToDecatur < CURRENT_TIMESTAMP or dateToDecatur is null) and
-(dateToAnacortes < CURRENT_TIMESTAMP or dateToAnacortes is null)");
+//delete all reservations older than 395 days to maintain database
+$oldDate = new DateTime();
+$oldDate->modify('-395 day');
+$old = $oldDate->format('Y-m-d');
+$conn->query("DELETE FROM reservationsDNW WHERE
+   (dateToDecatur < '" . $old . "' or dateToDecatur is null) and
+   (dateToAnacortes < '" .$old. "' or dateToAnacortes is null)");
+
+//select all past reservations
+$qry = $conn->prepare("SELECT * FROM reservationsDNW WHERE
+    (dateToDecatur < CURRENT_TIMESTAMP or dateToDecatur is null) and
+    (dateToAnacortes < CURRENT_TIMESTAMP or dateToAnacortes is null)");
 
 $qry->execute();
 
