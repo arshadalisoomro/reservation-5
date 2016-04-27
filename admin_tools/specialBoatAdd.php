@@ -3,27 +3,27 @@
 
 //this script adds a non-scheduled boat
 
+//set url variables for redirect if no POST or no Confirm
+$admin_url="https://www.flessner.org/-jonTest/admin_tools/specialBoatSelect.php";
+
 //connect to sql server with global $conn
 require '../dbConnect.php';
 
 //set timezone to west coast
 date_default_timezone_set('America/Los_Angeles');
 
-if (isset($_POST['datepicker'])) {
-    $dateChosen = $_POST['datepicker'];
-    $timeToAna = $_POST['time'];
-}
-
+if (isset($_POST['submit'])) {
+  //  $dateChosen = $_POST['specBoatDate'];
+  //  $timeToAna = $_POST['time'];
+  session_start();
+  //put data into local var
+  $dateChosen = $_SESSION['dateChosen'];
+  $timeToDec = $_SESSION['timeToDec'];
+  $timeToAna = $_SESSION['timeToAna'];
 //$dateDB = $dateChosen->format("Y-m-d");
-$dateMod = new DateTime($timeToAna);
-$dateMod->sub(new DateInterval('PT1H'));
-//echo $dateMod->format('H:i:s');
-$timeToDec = $dateMod->format('H:i:s');
-//echo $timeToDec;
-//echo $dateChosen;
-//echo $timeToAna;
-
-
+//$dateMod = new DateTime($timeToAna);
+//$dateMod->sub(new DateInterval('PT1H'));
+//$timeToDec = $dateMod->format('H:i:s');
 
 //insert special boat into database
 
@@ -32,8 +32,13 @@ $specialBoat = "INSERT INTO
         VALUES('".$dateChosen."', '$timeToDec', '$timeToAna')";
 
 $conn->query($specialBoat);
-
-
+}
+else {
+  header("Location: $admin_url");
+  die();
+}
+//unset session var as no longer needed
+unset($_SESSION['dataArray']);
 
 //close the connection
 $conn = null;
@@ -58,7 +63,6 @@ $conn = null;
                 <?php
                   $newDateChosen = date('l, m/d/Y', strtotime($dateChosen));
                   echo $newDateChosen;
-                //  echo $dateChosen;
                 ?>
             <br />
             <br />
