@@ -66,6 +66,13 @@ table, th, td {
 #link {
   color:black;
 }
+#boatDateDiv {
+  display: none;
+}
+#boatDateReq {
+  color: red;
+  display: none;
+}
  #adminLoginIncorrect {
   color: red;
   display: none;
