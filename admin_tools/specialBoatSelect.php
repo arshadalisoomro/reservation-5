@@ -1,5 +1,5 @@
 <?php
-// require valid admin login 
+// require valid admin login
 require 'check_login.php';
 ?>
 <!DOCTYPE html>
@@ -15,18 +15,30 @@ require 'check_login.php';
 
 
     <script>
+
          // show the date calendar for the next 30 days
          $(function() {
-              $("#datepicker").datepicker({minDate: 'today', maxDate: "+30D"});
+              $("#specBoatDate").datepicker({minDate: 'today', maxDate: "+30D"});
          });
+
+         function whenSubmit(){
+         if(!$('#specBoatDate').val()){
+             $('#boatDateReq').show();
+             return false;
+         }
+         return true;
+         }
 
     </script>
 
 </head>
 <body>
 
-<form action="specialBoatAdd.php" method="post">
-<p>Select date for non-scheduled boat: <input type="text" id="datepicker" name="datepicker"></p>
+<form action="specialBoatConfirm.php" method="post" onsubmit="return whenSubmit()">
+
+<p>Select date for non-scheduled boat: <input type="text" id="specBoatDate" name="specBoatDate"></p>
+<div id="boatDateReq">Select a date for the non-scheduled boat.</div>
+
 
 <p>Select time From Decatur to Anacortes:
 <br />
