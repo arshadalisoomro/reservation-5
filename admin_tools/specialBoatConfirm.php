@@ -48,22 +48,20 @@ $conn = null;
             <a>Please confirm that you would like to add the following non-scheduled boat:</a>
             <br/>
             <br/>
-            <a>Date - </a>
-                <?php
-                  $newDateChosen = date('l, m/d/Y', strtotime($dateChosen));
-                  echo $newDateChosen;
-                //  echo $dateChosen;
-                ?>
+            <?php
+              $newDateChosen = date('l, m/d/Y', strtotime($dateChosen));
+              echo $newDateChosen;
+            ?>
             <br />
             <br />
-            <a>Time from Skyline to DNW -</a>
+            <a>From Anacortes to DNW at</a>
             <?php
             $newTimeToDec = date('g:ia', strtotime($timeToDec));
             echo $newTimeToDec;
             ?>
             <br />
             <br />
-            <a>Time from DNW to Skyline -</a>
+            <a>From DNW to Anacortes at</a>
             <?php
             $newTimeToAna = date('g:ia', strtotime($timeToAna));
             echo $newTimeToAna;
@@ -73,10 +71,12 @@ $conn = null;
             <p>
             <!--<form id="confirm action="specialBoatAdd.php" method="post">-->
             <form action="specialBoatAdd.php" method="post">
-            <input type="submit" name="submit" value="Confirm"></input>
+            <input type="submit" name="submit" value="Confirm and Add Boat"></input>
             </form>
+            <br/>
+            <br/>
             <form action="admin_form.php">
-            <input type="submit" name="submit" value="Return"></input>
+            <input type="submit" name="submit" value="Cancel and Return"></input>
             </form>
             </p>
     </body>
