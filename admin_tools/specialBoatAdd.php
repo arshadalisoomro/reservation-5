@@ -13,35 +13,32 @@ require '../dbConnect.php';
 date_default_timezone_set('America/Los_Angeles');
 
 if (isset($_POST['submit'])) {
-  //  $dateChosen = $_POST['specBoatDate'];
-  //  $timeToAna = $_POST['time'];
-  session_start();
-  //put data into local var
-  $dateChosen = $_SESSION['dateChosen'];
-  $timeToDec = $_SESSION['timeToDec'];
-  $timeToAna = $_SESSION['timeToAna'];
-//$dateDB = $dateChosen->format("Y-m-d");
-//$dateMod = new DateTime($timeToAna);
-//$dateMod->sub(new DateInterval('PT1H'));
-//$timeToDec = $dateMod->format('H:i:s');
+   session_start();
+   //put data into local var
+   $dateChosen = $_SESSION['dateChosen'];
+   $timeToDec = $_SESSION['timeToDec'];
+   $timeToAna = $_SESSION['timeToAna'];
+   //insert special boat into database
+   //Alter Table makes sure duplicates are not re-entered
+   $alterTable = "ALTER TABLE boatsDNW ADD UNIQUE (departDate,departAnacortes,departDecatur)";
+   $conn->query($alterTable);
 
-//insert special boat into database
+   $specialBoat = "INSERT INTO boatsDNW(departDate, departAnacortes, departDecatur)
+                   VALUES('".$dateChosen."', '$timeToDec', '$timeToAna')";
 
-$specialBoat = "INSERT INTO
-        boatsDNW(departDate, departAnacortes, departDecatur)
-        VALUES('".$dateChosen."', '$timeToDec', '$timeToAna')";
-
-$conn->query($specialBoat);
+   $conn->query($specialBoat);
+   //unset session var as no longer needed
+   unset($_SESSION['dataArray']);
+   //close the connection
+   $conn = null;
 }
 else {
+  //close the connection
+  $conn = null;
+  //return to special boat select page
   header("Location: $admin_url");
   die();
 }
-//unset session var as no longer needed
-unset($_SESSION['dataArray']);
-
-//close the connection
-$conn = null;
 
 ?>
 
@@ -59,21 +56,20 @@ $conn = null;
             <a>You have added the following non-scheduled boats:</a>
             <br/>
             <br/>
-            <a>Date - </a>
-                <?php
-                  $newDateChosen = date('l, m/d/Y', strtotime($dateChosen));
-                  echo $newDateChosen;
-                ?>
+            <?php
+              $newDateChosen = date('l, m/d/Y', strtotime($dateChosen));
+              echo $newDateChosen;
+            ?>
             <br />
             <br />
-            <a>Time from Skyline to DNW -</a>
+            <a>From Anacortes to DNW at</a>
             <?php
             $newTimeToDec = date('g:ia', strtotime($timeToDec));
             echo $newTimeToDec;
             ?>
             <br />
             <br />
-            <a>Time from DNW to Skyline -</a>
+            <a>From DNW to Anacortes at</a>
             <?php
             $newTimeToAna = date('g:ia', strtotime($timeToAna));
             echo $newTimeToAna;
