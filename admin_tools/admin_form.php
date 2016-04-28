@@ -29,7 +29,7 @@ require 'check_login.php';
         <a id=link href="specialBoatselect.php">Add a non-scheduled boat</a>
         <br />
         <br />
-        <a id=link href="cancelBoat.html">Cancel a boat</a>
+        <a id=link href="cancelBoatSelect.php">Cancel a boat</a>
         <br />
         <br />
         <a id=link href="editEmail.html">Edit the email text</a>
