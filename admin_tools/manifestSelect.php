@@ -15,7 +15,7 @@
 
                 //init datepickers once boats added
                 var boatDates = [];     //will hold json data
-                $.getJSON("../getManifestBoats.php", function(jsonDates){
+                $.getJSON("getManifestBoats.php", function(jsonDates){
                     for(i=0; i < jsonDates.length; i++){
                         boatDates.push(jsonDates[i]);
                     }
