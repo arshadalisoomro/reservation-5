@@ -14,14 +14,11 @@ if (isset($_POST['specBoatDate'])) {
     $timeToAna = $_POST['time'];
 }
 
-//$dateDB = $dateChosen->format("Y-m-d");
+//calculate time to Dectur by subtracting one hour from time to Anacortes
 $dateMod = new DateTime($timeToAna);
 $dateMod->sub(new DateInterval('PT1H'));
-//echo $dateMod->format('H:i:s');
 $timeToDec = $dateMod->format('H:i:s');
-//echo $timeToDec;
-//echo $dateChosen;
-//echo $timeToAna;
+
 //start php session
 session_start();
 //set php session var
