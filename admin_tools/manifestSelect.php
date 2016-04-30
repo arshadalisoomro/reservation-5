@@ -1,4 +1,7 @@
-<?php require 'check_login.php'; ?>
+<?php
+// require valid admin login
+require 'check_login.php';
+ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +11,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="../css/boatRes.css">
+    <link rel="stylesheet" type="text/css" href="../css/admin.css">
     <script>
 
         $(function () {
@@ -96,6 +99,7 @@
 
         <!--   New code from here 4/21  -->
         <div id="manifestTimeDiv">
+            <br />
             <label for="manifestTime">Select Boat Time: </label>
             <select id="manifestTime" name="manifestTime">
                 <script>
@@ -165,11 +169,14 @@
                     });
                 </script>
             </select>
-            <div id="manifestTimeReq">Select a manifest time.</div>
-        </div>
+            <div id="manifestTimeReq">
+              <br />
+              Select a manifest time.</div>
+            </div>
 
 
         <div id="submitDiv">
+            <br />
             <input id="submitButton" type="submit" value="Submit">
             <span id="subMsg"></span>
         </div>
