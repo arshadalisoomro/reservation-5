@@ -44,7 +44,7 @@ table, th, td {
 #homeownerReq, #guestReq, #requireGuestAccept, #emailReq, #phoneError,
 #guestNumError, #noTravellerError, #decBoatCountError, #anaBoatCountError,
 #tripTypeReq, #decaturDateReq, #decaturTimeReq, #anacortesDateReq,
-#anacortesTimeReq, #adminLoginIncorrect {
+#anacortesTimeReq  {
   color: red;
   display: none;
 }
