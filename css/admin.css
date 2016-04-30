@@ -69,11 +69,8 @@ table, th, td {
 #boatDateDiv {
   display: none;
 }
-#boatDateReq {
-  color: red;
-  display: none;
-}
- #adminLoginIncorrect {
+#boatDateReq, #cancelBoatDateReq, #cancelBoatTimeReq,
+#manifestDateReq, #manifestTimeReq, #adminLoginIncorrect {
   color: red;
   display: none;
 }
