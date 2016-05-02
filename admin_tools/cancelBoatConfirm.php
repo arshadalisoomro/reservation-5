@@ -51,6 +51,15 @@ $conn = null;
        ?>
        <br />
        <br />
+       <a>and the return from DNW to Anacortes at</a>
+       <?php
+       $dateMod = new DateTime($newTimeChosen);
+       $dateMod->add(new DateInterval('PT1H'));
+       $returnTimeChosen = $dateMod->format('g:ia');
+       echo $returnTimeChosen;
+       ?>
+       <br />
+       <br />
        <p>
        <!--<form id="confirm action="specialBoatAdd.php" method="post">-->
        <form action="cancelBoat.php" method="post">
@@ -59,7 +68,7 @@ $conn = null;
        <br/>
        <br/>
        <form action="admin_form.php">
-       <input type="submit" name="submit" value="Abort and Return"></input>
+       <input type="submit" name="submit" value="Return without Canceling"></input>
        </form>
        </p>
 </body>
