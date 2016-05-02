@@ -54,13 +54,7 @@ $conn = null;
             <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'></link>
         <link rel="stylesheet" type="text/css" href="../css/admin.css"></link>
-        <style>
-
-        td {
-            text-align: left;
-            border-bottom: 1px solid darkgray;
-        }
-        </style>
+      
      </head>
      <body class=bodyManifest>
             <div>
