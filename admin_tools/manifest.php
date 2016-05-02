@@ -2,7 +2,7 @@
 <?php
 
 //set url variables for redirect if no POST
-$admin_url="https://www.flessner.org/-jonTest/manifest.html";
+$admin_url="https://www.flessner.org/-jonTest/manifestSelect.php";
 
 //returns manifest
 
@@ -54,7 +54,7 @@ $conn = null;
             <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'></link>
         <link rel="stylesheet" type="text/css" href="../css/admin.css"></link>
-      
+
      </head>
      <body class=bodyManifest>
             <div>
