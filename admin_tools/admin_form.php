@@ -32,7 +32,7 @@ require 'check_login.php';
         <a id=link href="cancelBoatSelect.php">Cancel a boat</a>
         <br />
         <br />
-        <a id=link href="editEmail.html">Edit the email text</a>
+        <a id=link href="editEmail.php">Edit the email response message</a>
 
     </div>
 </body>
