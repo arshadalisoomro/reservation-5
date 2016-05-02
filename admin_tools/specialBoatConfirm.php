@@ -11,13 +11,13 @@ date_default_timezone_set('America/Los_Angeles');
 
 if (isset($_POST['specBoatDate'])) {
     $dateChosen = $_POST['specBoatDate'];
-    $timeToAna = $_POST['time'];
+    $timeToDec = $_POST['time'];
 }
 
 //calculate time to Dectur by subtracting one hour from time to Anacortes
-$dateMod = new DateTime($timeToAna);
-$dateMod->sub(new DateInterval('PT1H'));
-$timeToDec = $dateMod->format('H:i:s');
+$dateMod = new DateTime($timeToDec);
+$dateMod->add(new DateInterval('PT1H'));
+$timeToAna = $dateMod->format('H:i:s');
 
 //start php session
 session_start();
