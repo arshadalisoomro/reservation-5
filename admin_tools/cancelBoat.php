@@ -58,7 +58,7 @@ else {
      </head>
      <body>
 
-            <a>You have cancelled the following boats:</a>
+            <a>You have canceled the following boats:</a>
             <br/>
             <br/>
             <?php
