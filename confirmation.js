@@ -116,26 +116,7 @@ $(function () {
     if (commCheckForAllSpaces !== "") {
         $('#comments').html("Comments: " + sessionStorage.getItem('comments'));
     }
-     
+    
 
-    //reiterate later cost
-    //$('#laterCost').html('<p style="margin-bottom: .1em;">' +
-    //    '<input type="button" name="payType" id="later"' +
-    //    'value="N">Pay later by check or homeowner charge: $' +
-    //   sessionStorage.getItem('cost') + "</p>");
-
-    //on submit
-    //$('#confirm').on('submit', function (e) {
-    //clear any error msg
-    //   $('#selectPayError').html("");
-    //if no radio button selected
-    //   if (!$('[name="payType"]').is(':checked')) {
-    //show error msg, prevent default
-    //       $('#selectPayError').html("You must select a payment option.");
-    //       e.preventDefault();
-    //   }
-    //payment selected, submit
-    //    $('#confirm').serialize();
-    // }); 
 
 });
