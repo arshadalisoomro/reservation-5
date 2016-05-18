@@ -1,0 +1,48 @@
+/* open-sans-regular - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'),
+       url('../fonts/open-sans-v13-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+ */
+       url('../fonts/open-sans-v13-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* open-sans-italic - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local('OpenSans-Italic'),
+       url('../fonts/open-sans-v13-latin-italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+ */
+       url('../fonts/open-sans-v13-latin-italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  /* background-color: #C3FDB8;  */ /* light jade */
+  background-color:#F5FFFA; /*mint green */
+
+  padding-left: 10%;
+}
+
+input {
+  font-family: 'Open Sans', sans-serif;
+  /* background-color: #C3FDB8;  */ /* light jade */
+  background-color:#F5FFFA; /*mint green */
+  font-size: 14px;
+}
+
+
+#subMsg {
+  padding-left: 20px;
+}
+ #confCodeReq {
+  color: red;
+  display: none;
+}
+#viewResDiv {
+  width: 50%;
+}
+#link {
+  color:black;
+}
