@@ -69,6 +69,9 @@ table, th, td {
 #boatDateDiv {
   display: none;
 }
+#emailDiv {
+  width: 50%;
+}
 #boatDateReq, #cancelBoatDateReq, #cancelBoatTimeReq,
 #manifestDateReq, #manifestTimeReq, #adminLoginIncorrect {
   color: red;
