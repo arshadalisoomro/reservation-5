@@ -29,7 +29,6 @@ $conn = null;
     <title>Update Email Response Message</title>
     <meta charset = "UTF-8"></meta>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'></link>
     <link rel="stylesheet" type="text/css" href="../css/admin.css"></link>
 
      </head>
