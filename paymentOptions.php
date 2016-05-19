@@ -143,6 +143,9 @@ if($_POST){
             $travellers = "There are " . $totalNumber .
             " passengers on this reservation.";
         }
+        $viewCancelText = "If you need to cancel this reservation within 24 hours
+        of departure please visit: ";
+        $viewUrl = "https://www.flessner.org/-jonTest/viewResSelect.php";
         $enjoy = "Enjoy your trip!";
 	    	//adding Kathy's message
     		$query = $conn->query("SELECT RespondMsg FROM AppData WHERE ID = 1");
@@ -169,7 +172,7 @@ if($_POST){
         $mail->Subject = "DNW Boat Reservation";
         $mail->Body = $success . "<br>" . $codeEmail . "<br>" . $itinerary .
             "<br>". $travellers . "<br>".$onboatCost . "<br>". "<br>". $addtlinfo . "<br>" .
-		  	"<br>" . $enjoy;
+		  	"<br>" . $enjoy . "<br>" . "<br>" . $viewCancelText . "<br>"  . $viewUrl;
         $mail->AddAddress($dataArray['email']);
         if(!$mail->Send()) {
            echo "Mailer Error: " . $mail->ErrorInfo;
