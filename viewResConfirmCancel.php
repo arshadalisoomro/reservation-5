@@ -51,7 +51,7 @@ $time = date("H:i:s");
     <head>
         <title>Confirm cancel reservation</title>
         <meta charset = "UTF-8"></meta>
-            <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!--    <script src="../libraries/jquery-2.2.3.min.js"></script> -->
         <link rel="stylesheet" type="text/css" href="css/viewRes.css"></link>
 
      </head>
@@ -111,7 +111,7 @@ $time = date("H:i:s");
         // then check 24 hour rule if date equal tomorrow
        if ($dateToAnacortes != "") {
            $anaTime = $timeToAnacortes->format("H:i:s");
-         if($dateToAnacortes == $tomorrow && $anaTime < $time) {        
+         if($dateToAnacortes == $tomorrow && $anaTime < $time) {
             echo "This reservation is within 24 hours of departure.";
             echo "<br>";
             echo "It cannot be canceled online.  Please contact Kathy.";
