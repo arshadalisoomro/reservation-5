@@ -33,6 +33,9 @@ require 'check_login.php';
         <br />
         <br />
         <a id=link href="editEmail.php">Edit the email response message</a>
+        <br />
+        <br />
+        <a id=link href="../mainPage.html">Return</a>
 
     </div>
 </body>
