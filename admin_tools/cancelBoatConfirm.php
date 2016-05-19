@@ -13,6 +13,21 @@ if (isset($_POST['cancelBoatDate'])) {
     $dateChosen = $_POST['cancelBoatDate'];
     $timeChosen = $_POST['cancelBoatTime'];
 }
+$qry = $conn->prepare("SELECT fromAnacortesCount, fromDecaturCount FROM boatsDNW
+  where departDate = '$dateChosen' and departAnacortes = '$timeChosen'");
+$qry->execute();
+$result = $qry->fetchAll();
+
+//$boatArray = array();
+
+foreach($result as $row) {
+    $anaCount = $row['fromAnacortesCount'];
+    $decCount= $row['fromDecaturCount'];
+}
+
+//$json = json_encode($boatArray);
+//echo $json;
+
 
 //start php session
 session_start();
@@ -28,12 +43,40 @@ $conn = null;
 <html>
     <head>
         <title>Confirm Boat to Cancel</title>
-        <meta charset = "UTF-8"></meta>   
+        <meta charset = "UTF-8"></meta>
         <link rel="stylesheet" type="text/css" href="../css/admin.css"></link>
 
      </head>
      <body>
-       <a>Please confirm that you would like to cancel the following boat:</a>
+       <?php
+       if ($anaCount != "0" || $decCount != "0") {
+         echo "This boat has passengers booked.";
+         echo "<br>";
+         echo "<br>";
+         echo "There are ";
+         echo $anaCount;
+         if ($anaCount == "1") {
+           echo " passenger booked from Anacortes and ";
+         }
+         else {
+           echo " passengers booked from Anacortes and ";
+         }
+         echo $decCount;
+         if ($decCount == "1") {
+         echo " passenger booked from Decatur.";
+         }
+         else {
+         echo " passengers booked from Decatur.";
+         }
+       }
+       else {
+         echo "There are no passengers booked on these boats.";
+       }
+
+       ?>
+       <br/>
+       <br/>
+       <a>Please confirm that you would like to cancel the following boats:</a>
        <br/>
        <br/>
        <?php
