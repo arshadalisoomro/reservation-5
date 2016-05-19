@@ -7,9 +7,9 @@ require 'check_login.php';
 <head>
     <title>Add Special Boat Selection</title>
     <meta charset = "UTF-8">
-    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="../css/jquery-ui.min.css">
+    <script src="../libraries/jquery-2.2.3.min.js"></script>
+    <script src="../libraries/jquery-ui.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/admin.css">
 
 
@@ -54,7 +54,7 @@ require 'check_login.php';
   <input type="radio" name="time" value="15:00:00"> 3pm to DNW, 4pm to Anacortes<br>
   <input type="radio" name="time" value="16:00:00"> 4pm to DNW, 5pm to Anacortes<br>
   <input type="radio" name="time" value="17:00:00"> 5pm to DNW, 6pm to Anacortes<br>
-  <input type="radio" name="time" value="18:00:00"> 6pm to DNW, 7pm to Anacortes<br>  
+  <input type="radio" name="time" value="18:00:00"> 6pm to DNW, 7pm to Anacortes<br>
   <input type="radio" name="time" value="19:30:00"> 7:30pm to DNW, 8:30pm to Anacortes<br>
   <br>
   <input type="submit" name="submit" value="Submit">
