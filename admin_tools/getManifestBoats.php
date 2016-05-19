@@ -8,18 +8,10 @@ require '../dbConnect.php';
 
 date_default_timezone_set('America/Los_Angeles');
 
-$today = date("Y-m-d");
-
-$date = new DateTime($today);
-$date->modify('+30 day');
-
-$maxDay = $date->format("Y-m-d");
-
 $qry = $conn->prepare("SELECT DISTINCT departDate FROM boatsDNW
       WHERE isCancelled = 0");
 
-$qry->execute(array($today, $maxDay));
-
+$qry->execute();
 $outDate = $qry->fetchAll();
 
 $boatArray = array();
