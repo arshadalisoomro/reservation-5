@@ -28,8 +28,7 @@ $conn = null;
 <html>
     <head>
         <title>Confirm Boat to Cancel</title>
-        <meta charset = "UTF-8"></meta>
-            <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <meta charset = "UTF-8"></meta>   
         <link rel="stylesheet" type="text/css" href="../css/admin.css"></link>
 
      </head>
