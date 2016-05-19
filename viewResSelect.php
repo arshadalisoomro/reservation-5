@@ -9,8 +9,8 @@
         <title>View Boat Reservation</title>
         <meta charset = "UTF-8">
         <link rel="stylesheet" href="../css/jquery-ui.min.css">
-        <script src="../libraries/jquery-2.2.3.min.js"></script>
-        <script src="../libraries/jquery-ui.min.js"></script>
+        <script src="libraries/jquery-2.2.3.min.js"></script>
+        <script src="libraries/jquery-ui.min.js"></script>
         <link rel="stylesheet" type="text/css" href="css/viewRes.css">
 
         <script>
