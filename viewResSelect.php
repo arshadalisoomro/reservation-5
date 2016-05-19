@@ -8,9 +8,9 @@
 <head>
         <title>View Boat Reservation</title>
         <meta charset = "UTF-8">
-        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="../css/jquery-ui.min.css">
+        <script src="../libraries/jquery-2.2.3.min.js"></script>
+        <script src="../libraries/jquery-ui.min.js"></script>
         <link rel="stylesheet" type="text/css" href="css/viewRes.css">
 
         <script>
@@ -44,9 +44,13 @@
         </script>
 
 </head>
-<body>
 
+<body>
+<a style="color:Black; text-align:left;" href='http://www.flessner.org/-jonTest/mainPage.html'>Home</a>
+<br />
+<br />
 <legend><b>View Boat Reservation</b></legend>
+
     <form id="viewResForm" action="viewResDisplay.php" method="post"
       onsubmit="return whenSubmit()" novalidate>
       <p><label for="confCode">Please enter a Confirmation Code:</label></p>
@@ -54,7 +58,6 @@
     <div id="confCodeReq">Please enter a valid confirmation code.</div>
       <input type="submit">
     </form>
-
 
 </body>
 </html>
