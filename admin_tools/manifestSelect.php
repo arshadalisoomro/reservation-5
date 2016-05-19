@@ -7,9 +7,9 @@ require 'check_login.php';
 <head>
     <title>Manifest Selection</title>
     <meta charset = "UTF-8">
-    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="../css/jquery-ui.min.css">
+    <script src="../libraries/jquery-2.2.3.min.js"></script>
+    <script src="../libraries/jquery-ui.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/admin.css">
     <script>
 
