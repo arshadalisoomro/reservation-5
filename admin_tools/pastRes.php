@@ -38,7 +38,7 @@ $conn = null;
 <head>
     <title>Display Past Reservations</title>
     <meta charset = "UTF-8">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <!--  <script src="../libraries/jquery-2.2.3.min.js"></script>-->
     <link rel="stylesheet" type="text/css" href="../css/admin.css">
 
 </head>
