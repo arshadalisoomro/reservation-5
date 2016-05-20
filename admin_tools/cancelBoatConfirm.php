@@ -25,10 +25,6 @@ foreach($result as $row) {
     $decCount= $row['fromDecaturCount'];
 }
 
-//$json = json_encode($boatArray);
-//echo $json;
-
-
 //start php session
 session_start();
 //set php session var
