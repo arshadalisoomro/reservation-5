@@ -22,10 +22,13 @@ if (isset($_POST['submit'])) {
    //Alter Table makes sure duplicates are not re-entered
    $alterTable = "ALTER TABLE boatsDNW ADD UNIQUE (departDate,departAnacortes,departDecatur)";
    $conn->query($alterTable);
-
+   // check to see if the boat was previously cancelled and if so, remove cancel
+   $checkBoat = "Update boatsDNW set isCancelled = '0' where departDate = '$dateChosen' And
+                 departAnacortes = '$timeToDec' and departDecatur = '$timeToAna'";
+   $conn->query($checkBoat);
+   //insert special boat into database
    $specialBoat = "INSERT INTO boatsDNW(departDate, departAnacortes, departDecatur)
-                   VALUES('".$dateChosen."', '$timeToDec', '$timeToAna')";
-
+                   VALUES('$dateChosen', '$timeToDec', '$timeToAna')";
    $conn->query($specialBoat);
    //unset session var as no longer needed
    unset($_SESSION['dataArray']);
