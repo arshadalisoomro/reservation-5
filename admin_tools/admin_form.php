@@ -35,6 +35,9 @@ require 'check_login.php';
         <a id=link href="editEmail.php">Edit the email response message</a>
         <br />
         <br />
+        <a id=link href="utilityPhotos/utilitySelect.php">View Utility Photos</a>
+        <br />
+        <br />
         <a id=link href="../mainPage.html">Return</a>
 
     </div>
