@@ -96,7 +96,7 @@ require 'check_login.php';
             <div id="manifestDateReq">Select a manifest date.</div>
         </div>
 
-        <!--   New code from here 4/21  -->
+  
         <div id="manifestTimeDiv">
             <br />
             <label for="manifestTime">Select Boat Time: </label>
