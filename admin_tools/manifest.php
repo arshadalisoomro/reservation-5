@@ -51,7 +51,6 @@ $conn = null;
     <head>
         <title>Manifest Output</title>
         <meta charset = "UTF-8"></meta>
-    <!--    <script src="../libraries/jquery-2.2.3.min.js"></script> -->
         <link rel="stylesheet" type="text/css" href="../css/admin.css"></link>
 
      </head>
@@ -72,7 +71,7 @@ $conn = null;
             <a>Adult Homeowner $15, Child Homeowner $10, Adult Guest $35, Child Guest $20</a>
             <br />
             <br />
-         <!--   <table class="table table-striped table-condensed"> -->
+    
                 <table class = tableAdmin>
                     <thead class=thManifest>
                         <tr>
