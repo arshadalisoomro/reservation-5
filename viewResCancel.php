@@ -59,7 +59,7 @@ if (isset($_POST['submit'])) {
 
 
    //send Kathy mail if reservation was paid by paypal
-   if ($paypal = "Y") {
+   if ($paypal == "Y") {
      //set cost with 2 decimal places for displaying in email
      $costDisplay = number_format($cost, 2);
      require_once('PHPMailer/PHPMailerAutoload.php');
@@ -115,7 +115,7 @@ else {
     <head>
         <title>Cancel Reservation</title>
         <meta charset = "UTF-8"></meta>
-    <!--    <script src="../libraries/jquery-2.2.3.min.js"></script>   -->   
+    <!--    <script src="../libraries/jquery-2.2.3.min.js"></script>   -->
         <link rel="stylesheet" type="text/css" href="css/viewRes.css"></link>
 
      </head>
